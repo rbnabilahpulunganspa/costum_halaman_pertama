@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beranda Baru</title>
+    
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter for main text, Noto Serif JP for aesthetic text -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Arabic -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS for theme, animations, and patterns -->
+    <style>
+        /* Define custom fonts */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .font-aesthetic {
+            font-family: 'Noto Serif JP', serif;
+        }
+        
+        .font-arabic {
+            font-family: 'Amiri', serif;
+        }
+
+        /* Animated Gradient Background */
+        body {
+            background: linear-gradient(-45deg, #1a202c, #2d3748, #4a5568, #2c5282);
+            background-size: 400% 400%;
+            animation: gradientBG 20s ease infinite;
+            overflow-x: hidden; /* Prevent horizontal scrollbars */
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Batik & Japanese Pattern Overlay */
+        .pattern-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Batik Parang pattern (more prominent) */
+            background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M80 80c0-22.091-17.909-40-40-40S0 57.909 0 80h80zM0 0c0 22.091 17.909 40 40 40s40-17.909 40-40H0z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+            z-index: 1;
+        }
+        
+        /* Main container for content */
+        main {
+            z-index: 10;
+        }
+
+        /* Custom dropdown for search engine selector */
+        .search-engine-selector { 
+            position: relative; 
+        }
+        .search-engine-dropdown {
+            display: none;
+            position: absolute;
+            top: 110%;
+            left: 0;
+            width: 140px;
+            z-index: 50;
+            animation: fadeIn 0.3s ease-out;
+        }
+        .search-engine-selector:hover .search-engine-dropdown { 
+            display: block; 
+        }
+
+        /* General Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+
+        /* --- Decorative Animated Elements --- */
+        .decorative-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 2;
+            pointer-events: none; /* Make them unclickable */
+        }
+
+        /* Japanese Sakura Petals Animation */
+        .petal {
+            position: absolute;
+            background: rgba(255, 183, 197, 0.7);
+            border-radius: 150px 0;
+            width: 15px;
+            height: 20px;
+            animation: fall linear infinite;
+        }
+        .petal:nth-child(2n) { animation-direction: reverse; }
+        .petal:nth-child(1) { left: 10%; animation-duration: 15s; animation-delay: -5s; }
+        .petal:nth-child(2) { left: 20%; animation-duration: 12s; animation-delay: -3s; }
+        .petal:nth-child(3) { left: 30%; animation-duration: 18s; animation-delay: -8s; }
+        .petal:nth-child(4) { left: 40%; animation-duration: 14s; animation-delay: -1s; }
+        .petal:nth-child(5) { left: 50%; animation-duration: 20s; animation-delay: -10s; }
+        .petal:nth-child(6) { left: 60%; animation-duration: 13s; animation-delay: -4s; }
+        .petal:nth-child(7) { left: 70%; animation-duration: 16s; animation-delay: -6s; }
+        .petal:nth-child(8) { left: 80%; animation-duration: 11s; animation-delay: -2s; }
+
+        @keyframes fall {
+            0% { top: -10%; transform: translateX(0) rotate(0); opacity: 1; }
+            100% { top: 110%; transform: translateX(100px) rotate(360deg); opacity: 0; }
+        }
+        
+        /* Chinese Lanterns */
+        .lantern {
+            position: absolute;
+            width: 60px;
+            height: 80px;
+            background: radial-gradient(circle at 50% 30%, #ff5e5e, #c70000);
+            border-radius: 45% 45% 40% 40%;
+            box-shadow: 0 0 20px 5px #ff5e5e, inset 0 -10px 15px rgba(0,0,0,0.3);
+            animation: sway 5s ease-in-out infinite;
+        }
+        .lantern::before, .lantern::after {
+            content: '';
+            position: absolute;
+            background: #a67c00;
+        }
+        .lantern::before {
+            top: -5px; left: 15px; width: 30px; height: 10px; border-radius: 5px 5px 0 0;
+        }
+        .lantern::after {
+            bottom: -5px; left: 20px; width: 20px; height: 10px; border-radius: 0 0 5px 5px;
+        }
+        .lantern-1 { top: 5%; right: 10%; transform-origin: top center; animation-delay: -1s;}
+        .lantern-2 { top: 15%; left: 8%; transform-origin: top center; animation-delay: -3s;}
+
+        @keyframes sway {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+        
+        /* Batik Elements */
+        .batik-element {
+            position: absolute;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+        .batik-1 {
+            top: 10%;
+            right: 5%;
+            width: 120px;
+            height: 120px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='none' stroke='%23ffffff' stroke-width='2' d='M20,20 C40,10 60,10 80,20 C90,40 90,60 80,80 C60,90 40,90 20,80 C10,60 10,40 20,20 Z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            animation: rotate 30s linear infinite;
+        }
+        .batik-2 {
+            bottom: 15%;
+            left: 5%;
+            width: 100px;
+            height: 100px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='none' stroke='%23ffffff' stroke-width='2' d='M30,30 C50,20 70,20 90,30 C95,50 95,70 90,90 C70,95 50,95 30,90 C20,70 20,50 30,30 Z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            animation: rotateReverse 25s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes rotateReverse {
+            from { transform: rotate(360deg); }
+            to { transform: rotate(0deg); }
+        }
+
+        /* Quran Verse Section */
+        .verse-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            max-width: 600px;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .verse-arabic {
+            font-size: 1.8rem;
+            text-align: right;
+            line-height: 2.5;
+            margin-bottom: 1rem;
+            font-family: 'Amiri', serif;
+        }
+
+        .verse-translation {
+            font-size: 1rem;
+            line-height: 1.6;
+            text-align: center;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .verse-reference {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Animation for verse */
+        @keyframes verseSlideIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .verse-slide-in {
+            animation: verseSlideIn 1s ease-out forwards;
+        }
+
+        /* Loading animation */
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        .loading {
+            animation: pulse 1.5s infinite;
+            text-align: center;
+        }
+        
+        /* Puzzle Loading Animation - REVISED */
+        .puzzle-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .puzzle-loading.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .puzzle-container {
+            width: 300px;
+            height: 300px;
+            position: relative;
+            margin-bottom: 2rem;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            gap: 4px;
+        }
+        
+        .puzzle-piece {
+            width: 100%;
+            height: 100%;
+            background-color: #3b82f6;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.7);
+            opacity: 0;
+            animation: assemblePuzzle 1s forwards;
+        }
+        
+        .puzzle-piece:nth-child(1) { animation-delay: 0.2s; }
+        .puzzle-piece:nth-child(2) { animation-delay: 0.4s; }
+        .puzzle-piece:nth-child(3) { animation-delay: 0.6s; }
+        .puzzle-piece:nth-child(4) { animation-delay: 0.8s; }
+        .puzzle-piece:nth-child(5) { animation-delay: 1.0s; }
+        .puzzle-piece:nth-child(6) { animation-delay: 1.2s; }
+        .puzzle-piece:nth-child(7) { animation-delay: 1.4s; }
+        .puzzle-piece:nth-child(8) { animation-delay: 1.6s; }
+        .puzzle-piece:nth-child(9) { animation-delay: 1.8s; }
+        .puzzle-piece:nth-child(10) { animation-delay: 2.0s; }
+        .puzzle-piece:nth-child(11) { animation-delay: 2.2s; }
+        .puzzle-piece:nth-child(12) { animation-delay: 2.4s; }
+        .puzzle-piece:nth-child(13) { animation-delay: 2.6s; }
+        .puzzle-piece:nth-child(14) { animation-delay: 2.8s; }
+        .puzzle-piece:nth-child(15) { animation-delay: 3.0s; }
+        .puzzle-piece:nth-child(16) { animation-delay: 3.2s; }
+        
+        @keyframes assemblePuzzle {
+            0% {
+                opacity: 0;
+                transform: translate(calc(-100px + 200px * random()), calc(-100px + 200px * random())) rotate(90deg);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(0, 0) rotate(0deg);
+            }
+        }
+        
+        .loading-text {
+            color: white;
+            font-size: 1.5rem;
+            margin-top: 1rem;
+            text-align: center;
+        }
+        
+        .loading-dots:after {
+            content: '';
+            animation: loadingDots 1.5s infinite;
+        }
+        
+        @keyframes loadingDots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+        
+        .countdown {
+            font-size: 1.2rem;
+            color: #3b82f6;
+            margin-top: 0.5rem;
+        }
+
+        /* Calendar View - REVISED */
+        .calendar-toggle {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-left: 10px;
+        }
+        
+        .calendar-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+        
+        .calendar-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 320px;
+            background: rgba(26, 32, 44, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .calendar-container.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .calendar-nav {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 0.5rem;
+        }
+        
+        .calendar-title {
+            font-weight: 600;
+            text-align: center;
+            flex-grow: 1;
+            margin: 0 10px;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+        
+        .calendar-weekday {
+            text-align: center;
+            font-size: 0.8rem;
+            padding: 0.5rem 0;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .calendar-day {
+            text-align: center;
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .calendar-day:hover {
+            background: rgba(59, 130, 246, 0.3);
+        }
+        
+        .calendar-day.today {
+            background: #3b82f6;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .calendar-day.other-month {
+            color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .calendar-day.selected {
+            background: rgba(255, 255, 255, 0.2);
+            font-weight: bold;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            #time {
+                font-size: 4rem !important;
+            }
+            
+            .verse-arabic {
+                font-size: 1.5rem;
+                line-height: 2;
+            }
+            
+            .verse-container {
+                padding: 1rem;
+                margin: 1rem 0.5rem;
+            }
+            
+            .lantern, .batik-element {
+                transform: scale(0.7);
+            }
+            
+            .petal {
+                transform: scale(0.8);
+            }
+            
+            .search-engine-dropdown {
+                width: 120px;
+                left: -20px;
+            }
+            
+            .puzzle-container {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .calendar-container {
+                width: 300px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+
+        @media (max-width: 480px) {
+            #time {
+                font-size: 3rem !important;
+            }
+            
+            .verse-arabic {
+                font-size: 1.3rem;
+            }
+            
+            .verse-translation {
+                font-size: 0.9rem;
+            }
+            
+            .ai-links {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .search-engine-dropdown {
+                left: -40px;
+                width: 150px;
+            }
+            
+            .puzzle-container {
+                width: 200px;
+                height: 200px;
+            }
+            
+            .loading-text {
+                font-size: 1.2rem;
+            }
+            
+            .calendar-container {
+                width: 280px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white flex items-center justify-center min-h-screen py-4">
+    
+    <!-- Background Patterns and Animations -->
+    <div class="pattern-overlay"></div>
+    <div class="decorative-elements">
+        <!-- Sakura Petals -->
+        <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+        <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+        <div class="petal"></div><div class="petal"></div>
+        <!-- Chinese Lanterns -->
+        <div class="lantern lantern-1"></div>
+        <div class="lantern lantern-2"></div>
+        <!-- Batik Elements -->
+        <div class="batik-element batik-1"></div>
+        <div class="batik-element batik-2"></div>
+    </div>
+    
+    <!-- Puzzle Loading Animation - REVISED -->
+    <div class="puzzle-loading" id="puzzle-loading">
+        <div class="puzzle-container">
+            <div class="puzzle-piece"></div>
+            <div class="puzzle-piece"></div>
+            <div class="puzzle-piece"></div>
+            <div class="puzzle-piece"></div>
+            <div class="puzzle-piece"></div>
+            <div class="puzzle-piece"></div>
+            <div class="puzzle-piece"></div>
+            <div class="puzzle-piece"></div>
+            <div class="puzzle-piece"></div>
+            <div class="puzzle-piece"></div>
+            <div class="puzzle-piece"></div>
+            <div class="puzzle-piece"></div>
+            <div class="puzzle-piece"></div>
+            <div class="puzzle-piece"></div>
+            <div class="puzzle-piece"></div>
+            <div class="puzzle-piece"></div>
+        </div>
+        <div class="loading-text">Menyusun koneksi global<span class="loading-dots"></span></div>
+        <div class="countdown" id="countdown">15</div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="relative flex flex-col items-center justify-center w-full max-w-2xl px-4">
+        
+        <!-- Clock and Date -->
+        <div class="text-center mb-6 md:mb-8 fade-in-up delay-1 relative">
+            <h1 id="time" class="text-6xl md:text-8xl font-bold tracking-tighter font-aesthetic">00:00:00</h1>
+            <div class="flex items-center justify-center mt-2">
+                <p id="date" class="text-lg md:text-xl text-gray-300 font-light">Memuat...</p>
+                <div class="calendar-toggle" id="calendar-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calendar View - REVISED -->
+        <div class="calendar-container" id="calendar-container">
+            <div class="calendar-header">
+                <button class="calendar-nav" id="calendar-prev">&lt;</button>
+                <h3 class="calendar-title" id="calendar-month-year"></h3>
+                <button class="calendar-nav" id="calendar-next">&gt;</button>
+            </div>
+            <div class="calendar-grid" id="calendar-weekdays">
+                <div class="calendar-weekday">Min</div>
+                <div class="calendar-weekday">Sen</div>
+                <div class="calendar-weekday">Sel</div>
+                <div class="calendar-weekday">Rab</div>
+                <div class="calendar-weekday">Kam</div>
+                <div class="calendar-weekday">Jum</div>
+                <div class="calendar-weekday">Sab</div>
+            </div>
+            <div class="calendar-grid" id="calendar-days"></div>
+        </div>
+
+        <!-- Search Form -->
+        <form id="search-form" class="w-full mb-6 fade-in-up delay-2">
+            <div class="flex items-center bg-gray-800/60 backdrop-blur-sm border border-gray-600 rounded-full shadow-lg overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-blue-400">
+                <!-- Search Engine Selector -->
+                <div class="search-engine-selector">
+                    <button type="button" id="current-engine" class="flex items-center p-3 text-gray-300 hover:bg-gray-700/50 transition-colors duration-200 rounded-full">
+                        <span id="engine-icon"></span>
+                    </button>
+                    <div class="search-engine-dropdown bg-gray-800 border border-gray-700 rounded-lg shadow-xl overflow-hidden">
+                        <a href="#" class="engine-option flex items-center p-3 hover:bg-blue-500/20 transition-colors" data-engine="google">
+                            <img src="https://www.google.com/s2/favicons?domain=google.com" alt="Google" class="w-5 h-5 mr-3"> Google
+                        </a>
+                        <a href="#" class="engine-option flex items-center p-3 hover:bg-blue-500/20 transition-colors" data-engine="duckduckgo">
+                            <img src="https://www.google.com/s2/favicons?domain=duckduckgo.com" alt="DuckDuckGo" class="w-5 h-5 mr-3"> DuckDuckGo
+                        </a>
+                        <a href="#" class="engine-option flex items-center p-3 hover:bg-blue-500/20 transition-colors" data-engine="bing">
+                            <img src="https://www.google.com/s2/favicons?domain=bing.com" alt="Bing" class="w-5 h-5 mr-3"> Bing
+                        </a>
+                        <a href="#" class="engine-option flex items-center p-3 hover:bg-blue-500/20 transition-colors" data-engine="brave">
+                            <img src="https://www.google.com/s2/favicons?domain=search.brave.com" alt="Brave" class="w-5 h-5 mr-3"> Brave
+                        </a>
+                        <a href="#" class="engine-option flex items-center p-3 hover:bg-blue-500/20 transition-colors" data-engine="youtube">
+                            <img src="https://www.google.com/s2/favicons?domain=youtube.com" alt="YouTube" class="w-5 h-5 mr-3"> YouTube
+                        </a>
+                        <a href="#" class="engine-option flex items-center p-3 hover:bg-blue-500/20 transition-colors" data-engine="wikipedia">
+                            <img src="https://www.google.com/s2/favicons?domain=wikipedia.org" alt="Wikipedia" class="w-5 h-5 mr-3"> Wikipedia
+                        </a>
+                    </div>
+                </div>
+                
+                <input type="text" id="search-input" placeholder="Cari di web..." class="w-full p-3 bg-transparent text-lg text-white placeholder-gray-400 focus:outline-none">
+                
+                <button type="submit" class="p-3 text-gray-300 hover:bg-blue-500/50 hover:text-white transition-colors duration-200 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+                </button>
+            </div>
+        </form>
+
+        <!-- AI Quick Links -->
+        <div class="flex items-center space-x-4 fade-in-up delay-3 ai-links">
+            <a href="https://gemini.google.com/" target="_blank" class="flex items-center space-x-2 px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-full hover:bg-purple-500/30 hover:border-purple-400 transition-all duration-300 transform hover:scale-105 shadow-md">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="text-purple-300"><path d="M12.465 2.152a.75.75 0 00-.93 0L2.868 8.16a.75.75 0 00-.218.668c.06.26.25.47.5.522l4.935 1.057a.75.75 0 01.553.553l1.057 4.935c.051.25.262.44.522.5.258.06.52-.09.668-.218l6.008-8.667a.75.75 0 000-.93L12.465 2.152zm-1.686 8.183a.75.75 0 01-1.06-1.06l3.25-3.25a.75.75 0 011.06 1.06l-3.25 3.25zM4.777 20.25a.75.75 0 00.5.25h.212a.75.75 0 00.520-.212l7.84-7.84a.75.75 0 00-1.06-1.06l-7.84 7.84c-.293.293-.316.747-.072 1.022zM18.75 3a.75.75 0 00-.75.75v3a.75.75 0 001.5 0v-3a.75.75 0 00-.75-.75z"/></svg>
+                <span class="text-sm font-medium text-gray-200">Gemini</span>
+            </a>
+            <a href="https://www.deepseek.com/chat" target="_blank" class="flex items-center space-x-2 px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-full hover:bg-cyan-500/30 hover:border-cyan-400 transition-all duration-300 transform hover:scale-105 shadow-md">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-300"><path d="M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20Z"/><path d="M12 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10Z"/><path d="M12 12h.01"/></svg>
+                <span class="text-sm font-medium text-gray-200">DeepSeek</span>
+            </a>
+        </div>
+        
+        <!-- Quran Verse Section -->
+        <div class="verse-container fade-in-up delay-3 mt-6">
+            <div id="verse-content">
+                <div class="loading">Memuat ayat...</div>
+            </div>
+        </div>
+        
+    </main>
+    
+    <!-- JavaScript Logic - REVISED -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Elements ---
+            const timeElement = document.getElementById('time');
+            const dateElement = document.getElementById('date');
+            const searchForm = document.getElementById('search-form');
+            const searchInput = document.getElementById('search-input');
+            const currentEngineButton = document.getElementById('current-engine');
+            const engineIcon = document.getElementById('engine-icon');
+            const engineOptions = document.querySelectorAll('.engine-option');
+            const verseContent = document.getElementById('verse-content');
+            const puzzleLoading = document.getElementById('puzzle-loading');
+            const countdownElement = document.getElementById('countdown');
+            const calendarToggle = document.getElementById('calendar-toggle');
+            const calendarContainer = document.getElementById('calendar-container');
+            const calendarMonthYear = document.getElementById('calendar-month-year');
+            const calendarDays = document.getElementById('calendar-days');
+            const calendarPrev = document.getElementById('calendar-prev');
+            const calendarNext = document.getElementById('calendar-next');
+
+            // --- State ---
+            let currentEngine = 'google';
+            let currentDate = new Date();
+            let calendarDate = new Date();
+            
+            const searchEngines = {
+                google: {
+                    url: 'https://www.google.com/search?q=',
+                    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#4285F4" d="M21.35 11.1h-9.2v2.7h5.3c-.2 1.8-1.6 3.2-3.4 3.2-2.1 0-3.8-1.7-3.8-3.8s1.7-3.8 3.8-3.8c1.1 0 2.1.5 2.8 1.2l2.2-2.2C17.9 5.8 15.8 5 13.6 5c-4.5 0-8.1 3.6-8.1 8.1s3.6 8.1 8.1 8.1 8.1-3.6 8.1-8.1c0-.5-.1-1.1-.2-1.6z"/></svg>`
+                },
+                duckduckgo: {
+                    url: 'https://duckduckgo.com/?q=',
+                    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#DE5833" d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 21.5c-5.238 0-9.5-4.262-9.5-9.5S6.762 2.5 12 2.5s9.5 4.262 9.5 9.5-4.262 9.5-9.5 9.5z"/><path fill="#DE5833" d="M12 5.5c-3.59 0-6.5 2.91-6.5 6.5s2.91 6.5 6.5 6.5 6.5-2.91 6.5-6.5-2.91-6.5-6.5-6.5z"/></svg>`
+                },
+                bing: {
+                    url: 'https://www.bing.com/search?q=',
+                    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#008373" d="M5.5 5.5h13v13h-13z"/><path fill="#fff" d="M12 12.5l4.5 4.5h-9l4.5-4.5z"/></svg>`
+                },
+                brave: {
+                    url: 'https://search.brave.com/search?q=',
+                    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#FF2000" d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8z"/><path fill="#FF2000" d="M12 7l3 5-3 5-3-5z"/></svg>`
+                },
+                youtube: {
+                    url: 'https://www.youtube.com/results?search_query=',
+                    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#FF0000" d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>`
+                },
+                wikipedia: {
+                    url: 'https://id.wikipedia.org/wiki/Special:Search?search=',
+                    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#000" d="M12 0c6.623 0 12 5.377 12 12s-5.377 12-12 12-12-5.377-12-12 5.377-12 12-12zm0 2c5.519 0 10 4.481 10 10s-4.481 10-10 10-10-4.481-10-10 4.481-10 10-10zm-1.5 5h3v9h-3v-9zm1.5 0h3v9h-3v-9z"/></svg>`
+                }
+            };
+
+            // --- Functions ---
+            
+            // Update time and date
+            function updateDateTime() {
+                const now = new Date();
+                const timeStr = now.toLocaleTimeString('id-ID', { 
+                    hour: '2-digit', 
+                    minute: '2-digit', 
+                    second: '2-digit',
+                    hour12: false 
+                });
+                const dateStr = now.toLocaleDateString('id-ID', { 
+                    weekday: 'long', 
+                    day: 'numeric', 
+                    month: 'long', 
+                    year: 'numeric' 
+                });
+                
+                timeElement.textContent = timeStr;
+                dateElement.textContent = dateStr;
+                
+                currentDate = now;
+            }
+            
+            // Set search engine
+            function setSearchEngine(engine) {
+                currentEngine = engine;
+                engineIcon.innerHTML = searchEngines[engine].icon;
+                
+                // Update placeholder text
+                searchInput.placeholder = `Cari dengan ${capitalizeFirstLetter(engine)}...`;
+            }
+            
+            // Capitalize first letter
+            function capitalizeFirstLetter(string) {
+                return string.charAt(0).toUpperCase() + string.slice(1);
+            }
+            
+            // Fetch random Quran verse
+            async function fetchRandomVerse() {
+                try {
+                    verseContent.innerHTML = '<div class="loading">Memuat ayat...</div>';
+                    
+                    // Using Al-Quran Cloud API
+                    const response = await fetch('https://api.alquran.cloud/v1/ayah/random');
+                    const data = await response.json();
+                    
+                    if (data.code === 200 && data.data) {
+                        const verse = data.data;
+                        const surahName = verse.surah.englishName;
+                        const verseNumber = verse.numberInSurah;
+                        
+                        verseContent.innerHTML = `
+                            <div class="verse-slide-in">
+                                <div class="verse-arabic">${verse.text}</div>
+                                <div class="verse-translation">${verse.text}</div>
+                                <div class="verse-reference">${surahName} ${verseNumber}</div>
+                            </div>
+                        `;
+                    } else {
+                        throw new Error('Failed to fetch verse');
+                    }
+                } catch (error) {
+                    console.error('Error fetching Quran verse:', error);
+                    verseContent.innerHTML = `
+                        <div class="verse-slide-in">
+                            <div class="verse-translation">Tidak dapat memuat ayat. Silakan refresh halaman.</div>
+                            <div class="verse-reference">Al-Quran</div>
+                        </div>
+                    `;
+                }
+            }
+            
+            // Show puzzle loading animation
+            function showPuzzleLoading() {
+                puzzleLoading.classList.add('active');
+                
+                let countdown = 15;
+                countdownElement.textContent = countdown;
+                
+                const countdownInterval = setInterval(() => {
+                    countdown--;
+                    countdownElement.textContent = countdown;
+                    
+                    if (countdown <= 0) {
+                        clearInterval(countdownInterval);
+                        puzzleLoading.classList.remove('active');
+                    }
+                }, 1000);
+            }
+            
+            // Calendar functions
+            function renderCalendar() {
+                const year = calendarDate.getFullYear();
+                const month = calendarDate.getMonth();
+                
+                const firstDay = new Date(year, month, 1);
+                const lastDay = new Date(year, month + 1, 0);
+                const daysInMonth = lastDay.getDate();
+                const startDay = firstDay.getDay(); // 0 = Sunday, 1 = Monday, etc.
+                
+                calendarMonthYear.textContent = `${calendarDate.toLocaleDateString('id-ID', { month: 'long' })} ${year}`;
+                
+                // Clear previous days
+                calendarDays.innerHTML = '';
+                
+                // Add empty cells for days before the first day of the month
+                for (let i = 0; i < startDay; i++) {
+                    const emptyCell = document.createElement('div');
+                    emptyCell.classList.add('calendar-day', 'other-month');
+                    calendarDays.appendChild(emptyCell);
+                }
+                
+                // Add cells for each day of the month
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dayCell = document.createElement('div');
+                    dayCell.classList.add('calendar-day');
+                    dayCell.textContent = day;
+                    
+                    // Check if this day is today
+                    const today = new Date();
+                    if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+                        dayCell.classList.add('today');
+                    }
+                    
+                    // Check if this day is selected
+                    if (day === currentDate.getDate() && month === currentDate.getMonth() && year === currentDate.getFullYear()) {
+                        dayCell.classList.add('selected');
+                    }
+                    
+                    dayCell.addEventListener('click', () => {
+                        document.querySelectorAll('.calendar-day.selected').forEach(el => {
+                            el.classList.remove('selected');
+                        });
+                        dayCell.classList.add('selected');
+                        
+                        // Update current date
+                        currentDate = new Date(year, month, day);
+                        updateDateTime();
+                    });
+                    
+                    calendarDays.appendChild(dayCell);
+                }
+            }
+            
+            // --- Event Listeners ---
+            
+            // Search form submission
+            searchForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const query = searchInput.value.trim();
+                if (query) {
+                    // Show puzzle loading animation
+                    showPuzzleLoading();
+                    
+                    // Perform search after a short delay to show animation
+                    setTimeout(() => {
+                        const searchUrl = searchEngines[currentEngine].url + encodeURIComponent(query);
+                        window.open(searchUrl, '_blank');
+                    }, 1500);
+                }
+            });
+            
+            // Search engine selection
+            engineOptions.forEach(option => {
+                option.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const engine = option.getAttribute('data-engine');
+                    setSearchEngine(engine);
+                });
+            });
+            
+            // Calendar toggle
+            calendarToggle.addEventListener('click', () => {
+                calendarContainer.classList.toggle('active');
+            });
+            
+            // Calendar navigation
+            calendarPrev.addEventListener('click', () => {
+                calendarDate.setMonth(calendarDate.getMonth() - 1);
+                renderCalendar();
+            });
+            
+            calendarNext.addEventListener('click', () => {
+                calendarDate.setMonth(calendarDate.getMonth() + 1);
+                renderCalendar();
+            });
+            
+            // Close calendar when clicking outside
+            document.addEventListener('click', (e) => {
+                if (calendarContainer.classList.contains('active') && 
+                    !calendarContainer.contains(e.target) && 
+                    !calendarToggle.contains(e.target)) {
+                    calendarContainer.classList.remove('active');
+                }
+            });
+            
+            // --- Initialize ---
+            
+            // Set initial search engine
+            setSearchEngine('google');
+            
+            // Update time immediately and set interval
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+            
+            // Fetch random Quran verse
+            fetchRandomVerse();
+            
+            // Render calendar
+            renderCalendar();
+            
+            // Hide puzzle loading animation initially
+            puzzleLoading.classList.remove('active');
+        });
+    </script>
+</body>
+</html>
