@@ -473,6 +473,97 @@
             font-weight: bold;
         }
 
+        /* Link Loading Animation */
+        .link-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .link-loading.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .portal-animation {
+            width: 200px;
+            height: 200px;
+            position: relative;
+            margin-bottom: 2rem;
+        }
+        
+        .portal-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            animation: portalSpin 2s linear infinite;
+        }
+        
+        .portal-ring-1 {
+            width: 200px;
+            height: 200px;
+            border-top-color: #3b82f6;
+            animation-duration: 3s;
+        }
+        
+        .portal-ring-2 {
+            width: 160px;
+            height: 160px;
+            top: 20px;
+            left: 20px;
+            border-right-color: #8b5cf6;
+            animation-duration: 2s;
+            animation-direction: reverse;
+        }
+        
+        .portal-ring-3 {
+            width: 120px;
+            height: 120px;
+            top: 40px;
+            left: 40px;
+            border-bottom-color: #10b981;
+            animation-duration: 1.5s;
+        }
+        
+        .portal-center {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            top: 60px;
+            left: 60px;
+            background: radial-gradient(circle, #ffffff 0%, #3b82f6 100%);
+            border-radius: 50%;
+            animation: portalPulse 1.5s ease-in-out infinite alternate;
+        }
+        
+        @keyframes portalSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes portalPulse {
+            0% { transform: scale(1); opacity: 0.7; }
+            100% { transform: scale(1.2); opacity: 1; }
+        }
+        
+        .link-loading-text {
+            color: white;
+            font-size: 1.5rem;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
         /* Responsive adjustments */
         @media (max-width: 768px) {
             #time {
@@ -512,6 +603,37 @@
                 left: 50%;
                 transform: translateX(-50%);
             }
+            
+            .portal-animation {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .portal-ring-1 {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .portal-ring-2 {
+                width: 120px;
+                height: 120px;
+                top: 15px;
+                left: 15px;
+            }
+            
+            .portal-ring-3 {
+                width: 90px;
+                height: 90px;
+                top: 30px;
+                left: 30px;
+            }
+            
+            .portal-center {
+                width: 60px;
+                height: 60px;
+                top: 45px;
+                left: 45px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -549,6 +671,41 @@
             .calendar-container {
                 width: 280px;
             }
+            
+            .portal-animation {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .portal-ring-1 {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .portal-ring-2 {
+                width: 90px;
+                height: 90px;
+                top: 15px;
+                left: 15px;
+            }
+            
+            .portal-ring-3 {
+                width: 60px;
+                height: 60px;
+                top: 30px;
+                left: 30px;
+            }
+            
+            .portal-center {
+                width: 40px;
+                height: 40px;
+                top: 40px;
+                left: 40px;
+            }
+            
+            .link-loading-text {
+                font-size: 1.2rem;
+            }
         }
     </style>
 </head>
@@ -569,7 +726,7 @@
         <div class="batik-element batik-2"></div>
     </div>
     
-    <!-- Puzzle Loading Animation - REVISED -->
+    <!-- Puzzle Loading Animation -->
     <div class="puzzle-loading" id="puzzle-loading">
         <div class="puzzle-container">
             <div class="puzzle-piece"></div>
@@ -590,7 +747,18 @@
             <div class="puzzle-piece"></div>
         </div>
         <div class="loading-text">Menyusun koneksi global<span class="loading-dots"></span></div>
-        <div class="countdown" id="countdown">15</div>
+        <div class="countdown" id="countdown">3</div>
+    </div>
+
+    <!-- Link Loading Animation -->
+    <div class="link-loading" id="link-loading">
+        <div class="portal-animation">
+            <div class="portal-ring portal-ring-1"></div>
+            <div class="portal-ring portal-ring-2"></div>
+            <div class="portal-ring portal-ring-3"></div>
+            <div class="portal-center"></div>
+        </div>
+        <div class="link-loading-text" id="link-loading-text">Membuka portal...</div>
     </div>
 
     <!-- Main Content -->
@@ -612,7 +780,7 @@
             </div>
         </div>
 
-        <!-- Calendar View - REVISED -->
+        <!-- Calendar View -->
         <div class="calendar-container" id="calendar-container">
             <div class="calendar-header">
                 <button class="calendar-nav" id="calendar-prev">&lt;</button>
@@ -669,303 +837,363 @@
             </div>
         </form>
 
-        <!-- AI Quick Links -->
-        <div class="flex items-center space-x-4 fade-in-up delay-3 ai-links">
-            <a href="https://docs.google.com/spreadsheets/d/1NuDpvUSqY7WpxSHz1CDTWEhfnUYbZRO3HIJxvThj45w/edit?usp=sharing" target="_blank" class="flex items-center space-x-2 px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-full hover:bg-purple-500/30 hover:border-purple-400 transition-all duration-300 transform hover:scale-105 shadow-md">
+        <!-- AI Quick Links - SEMUA LINK DIPERBAIKI -->
+        <div class="flex flex-wrap justify-center gap-4 fade-in-up delay-3 ai-links">
+            <a href="https://docs.google.com/spreadsheets/d/1NuDpvUSqY7WpxSHz1CDTWEhfnUYbZRO3HIJxvThj45w/edit?usp=sharing" class="quick-link flex items-center space-x-2 px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-full hover:bg-purple-500/30 hover:border-purple-400 transition-all duration-300 transform hover:scale-105 shadow-md" data-name="Daftar Reservasi">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="text-purple-300"><path d="M12.465 2.152a.75.75 0 00-.93 0L2.868 8.16a.75.75 0 00-.218.668c.06.26.25.47.5.522l4.935 1.057a.75.75 0 01.553.553l1.057 4.935c.051.25.262.44.522.5.258.06.52-.09.668-.218l6.008-8.667a.75.75 0 000-.93L12.465 2.152zm-1.686 8.183a.75.75 0 01-1.06-1.06l3.25-3.25a.75.75 0 011.06 1.06l-3.25 3.25zM4.777 20.25a.75.75 0 00.5.25h.212a.75.75 0 00.520-.212l7.84-7.84a.75.75 0 00-1.06-1.06l-7.84 7.84c-.293.293-.316.747-.072 1.022zM18.75 3a.75.75 0 00-.75.75v3a.75.75 0 001.5 0v-3a.75.75 0 00-.75-.75z"/></svg>
                 <span class="text-sm font-medium text-gray-200">DAFTAR RESERVASI</span>
-            </a><a href="https://drive.google.com/drive/folders/1t_T4rtpm3-FPN8vBjd1Y3Pi7q4jTEMNX?usp=sharing" target="_blank" class="flex items-center space-x-2 px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-full hover:bg-purple-500/30 hover:border-purple-400 transition-all duration-300 transform hover:scale-105 shadow-md">
+            </a>
+            
+            <a href="https://drive.google.com/drive/folders/1t_T4rtpm3-FPN8vBjd1Y3Pi7q4jTEMNX?usp=sharing" class="quick-link flex items-center space-x-2 px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-full hover:bg-purple-500/30 hover:border-purple-400 transition-all duration-300 transform hover:scale-105 shadow-md" data-name="Kumpulan Berkas">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="text-purple-300"><path d="M12.465 2.152a.75.75 0 00-.93 0L2.868 8.16a.75.75 0 00-.218.668c.06.26.25.47.5.522l4.935 1.057a.75.75 0 01.553.553l1.057 4.935c.051.25.262.44.522.5.258.06.52-.09.668-.218l6.008-8.667a.75.75 0 000-.93L12.465 2.152zm-1.686 8.183a.75.75 0 01-1.06-1.06l3.25-3.25a.75.75 0 011.06 1.06l-3.25 3.25zM4.777 20.25a.75.75 0 00.5.25h.212a.75.75 0 00.520-.212l7.84-7.84a.75.75 0 00-1.06-1.06l-7.84 7.84c-.293.293-.316.747-.072 1.022zM18.75 3a.75.75 0 00-.75.75v3a.75.75 0 001.5 0v-3a.75.75 0 00-.75-.75z"/></svg>
                 <span class="text-sm font-medium text-gray-200">KUMPULAN BERKAS</span>
             </a>
-            </a><a href="https://rbnabilahpulunganadm.github.io/nomor_surat_keluar_resmi/" target="_blank" class="flex items-center space-x-2 px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-full hover:bg-purple-500/30 hover:border-purple-400 transition-all duration-300 transform hover:scale-105 shadow-md">
+            
+            <a href="https://rbnabilahpulunganadm.github.io/nomor_surat_keluar_resmi/" class="quick-link flex items-center space-x-2 px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-full hover:bg-purple-500/30 hover:border-purple-400 transition-all duration-300 transform hover:scale-105 shadow-md" data-name="Nomor Surat Keluar">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="text-purple-300"><path d="M12.465 2.152a.75.75 0 00-.93 0L2.868 8.16a.75.75 0 00-.218.668c.06.26.25.47.5.522l4.935 1.057a.75.75 0 01.553.553l1.057 4.935c.051.25.262.44.522.5.258.06.52-.09.668-.218l6.008-8.667a.75.75 0 000-.93L12.465 2.152zm-1.686 8.183a.75.75 0 01-1.06-1.06l3.25-3.25a.75.75 0 011.06 1.06l-3.25 3.25zM4.777 20.25a.75.75 0 00.5.25h.212a.75.75 0 00.520-.212l7.84-7.84a.75.75 0 00-1.06-1.06l-7.84 7.84c-.293.293-.316.747-.072 1.022zM18.75 3a.75.75 0 00-.75.75v3a.75.75 0 001.5 0v-3a.75.75 0 00-.75-.75z"/></svg>
-                <span class="text-sm font-medium text-gray-200">NOMOR SURAT</span>
+                <span class="text-sm font-medium text-gray-200">NOMOR SURAT KELUAR</span>
             </a>
-            <a href="https://rbnabilahpulunganadm.github.io/reservasi_pengunjung_NPMABS/" target="_blank" class="flex items-center space-x-2 px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-full hover:bg-cyan-500/30 hover:border-cyan-400 transition-all duration-300 transform hover:scale-105 shadow-md">
+            
+            <a href="https://rbnabilahpulunganadm.github.io/reservasi_pengunjung_NPMABS/" class="quick-link flex items-center space-x-2 px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-full hover:bg-cyan-500/30 hover:border-cyan-400 transition-all duration-300 transform hover:scale-105 shadow-md" data-name="Aplikasi Reservasi">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-300"><path d="M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20Z"/><path d="M12 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10Z"/><path d="M12 12h.01"/></svg>
-                <span class="text-sm font-medium text-gray-200">APLIKASI RESERVASI NABILAH PULUNGAN</span>
+                <span class="text-sm font-medium text-gray-200">APLIKASI RESERVASI</span>
             </a>
         </div>
-        
+
         <!-- Quran Verse Section -->
-        <div class="verse-container fade-in-up delay-3 mt-6">
-            <div id="verse-content">
-                <div class="loading">Memuat ayat...</div>
-            </div>
+        <div class="verse-container fade-in-up delay-3">
+            <div class="verse-arabic loading" id="verse-arabic">Memuat ayat...</div>
+            <div class="verse-translation loading" id="verse-translation">Memuat terjemahan...</div>
+            <div class="verse-reference" id="verse-reference"></div>
         </div>
-        
+
     </main>
-    
-    <!-- JavaScript Logic - REVISED -->
+
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // --- Elements ---
-            const timeElement = document.getElementById('time');
-            const dateElement = document.getElementById('date');
-            const searchForm = document.getElementById('search-form');
-            const searchInput = document.getElementById('search-input');
-            const currentEngineButton = document.getElementById('current-engine');
-            const engineIcon = document.getElementById('engine-icon');
-            const engineOptions = document.querySelectorAll('.engine-option');
-            const verseContent = document.getElementById('verse-content');
+        // ========== LOADING ANIMATION ==========
+        document.addEventListener('DOMContentLoaded', function() {
             const puzzleLoading = document.getElementById('puzzle-loading');
             const countdownElement = document.getElementById('countdown');
+            
+            // Show loading animation
+            puzzleLoading.classList.add('active');
+            
+            let countdown = 3;
+            countdownElement.textContent = countdown;
+            
+            const countdownInterval = setInterval(() => {
+                countdown--;
+                countdownElement.textContent = countdown;
+                
+                if (countdown <= 0) {
+                    clearInterval(countdownInterval);
+                    // Hide loading animation after puzzle animation completes
+                    setTimeout(() => {
+                        puzzleLoading.classList.remove('active');
+                    }, 500);
+                }
+            }, 1000);
+            
+            // Initialize all features after loading
+            setTimeout(() => {
+                initializeClock();
+                initializeSearch();
+                initializeCalendar();
+                initializeQuickLinks();
+                loadQuranVerse();
+            }, 3500);
+        });
+
+        // ========== CLOCK FUNCTIONALITY ==========
+        function initializeClock() {
+            function updateTime() {
+                const now = new Date();
+                const timeElement = document.getElementById('time');
+                const dateElement = document.getElementById('date');
+                
+                // Format time
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+                timeElement.textContent = `${hours}:${minutes}:${seconds}`;
+                
+                // Format date
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                dateElement.textContent = now.toLocaleDateString('id-ID', options);
+            }
+            
+            updateTime();
+            setInterval(updateTime, 1000);
+        }
+
+        // ========== SEARCH FUNCTIONALITY ==========
+        function initializeSearch() {
+            const searchForm = document.getElementById('search-form');
+            const searchInput = document.getElementById('search-input');
+            const currentEngine = document.getElementById('current-engine');
+            const engineIcon = document.getElementById('engine-icon');
+            const engineOptions = document.querySelectorAll('.engine-option');
+            
+            // Default search engine
+            let selectedEngine = 'google';
+            
+            // Set initial engine icon
+            updateEngineIcon();
+            
+            // Handle search form submission
+            searchForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const query = searchInput.value.trim();
+                
+                if (query) {
+                    let searchUrl;
+                    
+                    switch(selectedEngine) {
+                        case 'google':
+                            searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+                            break;
+                        case 'duckduckgo':
+                            searchUrl = `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
+                            break;
+                        case 'bing':
+                            searchUrl = `https://www.bing.com/search?q=${encodeURIComponent(query)}`;
+                            break;
+                        case 'brave':
+                            searchUrl = `https://search.brave.com/search?q=${encodeURIComponent(query)}`;
+                            break;
+                        case 'youtube':
+                            searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
+                            break;
+                        case 'wikipedia':
+                            searchUrl = `https://id.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(query)}`;
+                            break;
+                        default:
+                            searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+                    }
+                    
+                    // Show loading animation for search
+                    showLinkLoading(`Mencari dengan ${selectedEngine}...`);
+                    
+                    setTimeout(() => {
+                        window.location.href = searchUrl;
+                    }, 2000);
+                }
+            });
+            
+            // Handle search engine selection
+            engineOptions.forEach(option => {
+                option.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    selectedEngine = this.getAttribute('data-engine');
+                    updateEngineIcon();
+                });
+            });
+            
+            function updateEngineIcon() {
+                let iconUrl;
+                let engineName;
+                
+                switch(selectedEngine) {
+                    case 'google':
+                        iconUrl = 'https://www.google.com/s2/favicons?domain=google.com';
+                        engineName = 'Google';
+                        break;
+                    case 'duckduckgo':
+                        iconUrl = 'https://www.google.com/s2/favicons?domain=duckduckgo.com';
+                        engineName = 'DuckDuckGo';
+                        break;
+                    case 'bing':
+                        iconUrl = 'https://www.google.com/s2/favicons?domain=bing.com';
+                        engineName = 'Bing';
+                        break;
+                    case 'brave':
+                        iconUrl = 'https://www.google.com/s2/favicons?domain=search.brave.com';
+                        engineName = 'Brave';
+                        break;
+                    case 'youtube':
+                        iconUrl = 'https://www.google.com/s2/favicons?domain=youtube.com';
+                        engineName = 'YouTube';
+                        break;
+                    case 'wikipedia':
+                        iconUrl = 'https://www.google.com/s2/favicons?domain=wikipedia.org';
+                        engineName = 'Wikipedia';
+                        break;
+                    default:
+                        iconUrl = 'https://www.google.com/s2/favicons?domain=google.com';
+                        engineName = 'Google';
+                }
+                
+                engineIcon.innerHTML = `<img src="${iconUrl}" alt="${engineName}" class="w-5 h-5">`;
+                searchInput.placeholder = `Cari dengan ${engineName}...`;
+            }
+        }
+
+        // ========== QUICK LINKS FUNCTIONALITY ==========
+        function initializeQuickLinks() {
+            const quickLinks = document.querySelectorAll('.quick-link');
+            
+            quickLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const url = this.href;
+                    const linkName = this.getAttribute('data-name');
+                    
+                    // Show loading animation
+                    showLinkLoading(`Membuka ${linkName}...`);
+                    
+                    // Navigate after animation
+                    setTimeout(() => {
+                        window.location.href = url;
+                    }, 2000);
+                });
+            });
+        }
+
+        // ========== LINK LOADING ANIMATION ==========
+        function showLinkLoading(message) {
+            const linkLoading = document.getElementById('link-loading');
+            const linkLoadingText = document.getElementById('link-loading-text');
+            
+            linkLoadingText.textContent = message;
+            linkLoading.classList.add('active');
+        }
+
+        // ========== CALENDAR FUNCTIONALITY ==========
+        function initializeCalendar() {
             const calendarToggle = document.getElementById('calendar-toggle');
             const calendarContainer = document.getElementById('calendar-container');
             const calendarMonthYear = document.getElementById('calendar-month-year');
             const calendarDays = document.getElementById('calendar-days');
             const calendarPrev = document.getElementById('calendar-prev');
             const calendarNext = document.getElementById('calendar-next');
-
-            // --- State ---
-            let currentEngine = 'google';
+            
             let currentDate = new Date();
-            let calendarDate = new Date();
+            let currentMonth = currentDate.getMonth();
+            let currentYear = currentDate.getFullYear();
             
-            const searchEngines = {
-                google: {
-                    url: 'https://www.google.com/search?q=',
-                    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#4285F4" d="M21.35 11.1h-9.2v2.7h5.3c-.2 1.8-1.6 3.2-3.4 3.2-2.1 0-3.8-1.7-3.8-3.8s1.7-3.8 3.8-3.8c1.1 0 2.1.5 2.8 1.2l2.2-2.2C17.9 5.8 15.8 5 13.6 5c-4.5 0-8.1 3.6-8.1 8.1s3.6 8.1 8.1 8.1 8.1-3.6 8.1-8.1c0-.5-.1-1.1-.2-1.6z"/></svg>`
-                },
-                duckduckgo: {
-                    url: 'https://duckduckgo.com/?q=',
-                    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#DE5833" d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 21.5c-5.238 0-9.5-4.262-9.5-9.5S6.762 2.5 12 2.5s9.5 4.262 9.5 9.5-4.262 9.5-9.5 9.5z"/><path fill="#DE5833" d="M12 5.5c-3.59 0-6.5 2.91-6.5 6.5s2.91 6.5 6.5 6.5 6.5-2.91 6.5-6.5-2.91-6.5-6.5-6.5z"/></svg>`
-                },
-                bing: {
-                    url: 'https://www.bing.com/search?q=',
-                    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#008373" d="M5.5 5.5h13v13h-13z"/><path fill="#fff" d="M12 12.5l4.5 4.5h-9l4.5-4.5z"/></svg>`
-                },
-                brave: {
-                    url: 'https://search.brave.com/search?q=',
-                    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#FF2000" d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8z"/><path fill="#FF2000" d="M12 7l3 5-3 5-3-5z"/></svg>`
-                },
-                youtube: {
-                    url: 'https://www.youtube.com/results?search_query=',
-                    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#FF0000" d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>`
-                },
-                wikipedia: {
-                    url: 'https://id.wikipedia.org/wiki/Special:Search?search=',
-                    icon: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#000" d="M12 0c6.623 0 12 5.377 12 12s-5.377 12-12 12-12-5.377-12-12 5.377-12 12-12zm0 2c5.519 0 10 4.481 10 10s-4.481 10-10 10-10-4.481-10-10 4.481-10 10-10zm-1.5 5h3v9h-3v-9zm1.5 0h3v9h-3v-9z"/></svg>`
+            // Toggle calendar visibility
+            calendarToggle.addEventListener('click', function() {
+                calendarContainer.classList.toggle('active');
+                renderCalendar();
+            });
+            
+            // Close calendar when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!calendarContainer.contains(e.target) && !calendarToggle.contains(e.target)) {
+                    calendarContainer.classList.remove('active');
                 }
-            };
-
-            // --- Functions ---
+            });
             
-            // Update time and date
-            function updateDateTime() {
-                const now = new Date();
-                const timeStr = now.toLocaleTimeString('id-ID', { 
-                    hour: '2-digit', 
-                    minute: '2-digit', 
-                    second: '2-digit',
-                    hour12: false 
-                });
-                const dateStr = now.toLocaleDateString('id-ID', { 
-                    weekday: 'long', 
-                    day: 'numeric', 
-                    month: 'long', 
-                    year: 'numeric' 
-                });
-                
-                timeElement.textContent = timeStr;
-                dateElement.textContent = dateStr;
-                
-                currentDate = now;
-            }
-            
-            // Set search engine
-            function setSearchEngine(engine) {
-                currentEngine = engine;
-                engineIcon.innerHTML = searchEngines[engine].icon;
-                
-                // Update placeholder text
-                searchInput.placeholder = `Cari dengan ${capitalizeFirstLetter(engine)}...`;
-            }
-            
-            // Capitalize first letter
-            function capitalizeFirstLetter(string) {
-                return string.charAt(0).toUpperCase() + string.slice(1);
-            }
-            
-            // Fetch random Quran verse
-            async function fetchRandomVerse() {
-                try {
-                    verseContent.innerHTML = '<div class="loading">Memuat ayat...</div>';
-                    
-                    // Using Al-Quran Cloud API
-                    const response = await fetch('https://api.alquran.cloud/v1/ayah/random');
-                    const data = await response.json();
-                    
-                    if (data.code === 200 && data.data) {
-                        const verse = data.data;
-                        const surahName = verse.surah.englishName;
-                        const verseNumber = verse.numberInSurah;
-                        
-                        verseContent.innerHTML = `
-                            <div class="verse-slide-in">
-                                <div class="verse-arabic">${verse.text}</div>
-                                <div class="verse-translation">${verse.text}</div>
-                                <div class="verse-reference">${surahName} ${verseNumber}</div>
-                            </div>
-                        `;
-                    } else {
-                        throw new Error('Failed to fetch verse');
-                    }
-                } catch (error) {
-                    console.error('Error fetching Quran verse:', error);
-                    verseContent.innerHTML = `
-                        <div class="verse-slide-in">
-                            <div class="verse-translation">Tidak dapat memuat ayat. Silakan refresh halaman.</div>
-                            <div class="verse-reference">Al-Quran</div>
-                        </div>
-                    `;
+            // Navigation
+            calendarPrev.addEventListener('click', function() {
+                currentMonth--;
+                if (currentMonth < 0) {
+                    currentMonth = 11;
+                    currentYear--;
                 }
-            }
+                renderCalendar();
+            });
             
-            // Show puzzle loading animation
-            function showPuzzleLoading() {
-                puzzleLoading.classList.add('active');
-                
-                let countdown = 15;
-                countdownElement.textContent = countdown;
-                
-                const countdownInterval = setInterval(() => {
-                    countdown--;
-                    countdownElement.textContent = countdown;
-                    
-                    if (countdown <= 0) {
-                        clearInterval(countdownInterval);
-                        puzzleLoading.classList.remove('active');
-                    }
-                }, 1000);
-            }
+            calendarNext.addEventListener('click', function() {
+                currentMonth++;
+                if (currentMonth > 11) {
+                    currentMonth = 0;
+                    currentYear++;
+                }
+                renderCalendar();
+            });
             
-            // Calendar functions
             function renderCalendar() {
-                const year = calendarDate.getFullYear();
-                const month = calendarDate.getMonth();
-                
-                const firstDay = new Date(year, month, 1);
-                const lastDay = new Date(year, month + 1, 0);
-                const daysInMonth = lastDay.getDate();
-                const startDay = firstDay.getDay(); // 0 = Sunday, 1 = Monday, etc.
-                
-                calendarMonthYear.textContent = `${calendarDate.toLocaleDateString('id-ID', { month: 'long' })} ${year}`;
+                // Update month and year title
+                const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni",
+                    "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+                calendarMonthYear.textContent = `${monthNames[currentMonth]} ${currentYear}`;
                 
                 // Clear previous days
                 calendarDays.innerHTML = '';
                 
+                // Get first day of month and number of days
+                const firstDay = new Date(currentYear, currentMonth, 1);
+                const lastDay = new Date(currentYear, currentMonth + 1, 0);
+                const daysInMonth = lastDay.getDate();
+                
+                // Get day of week for first day (0 = Sunday, 1 = Monday, etc.)
+                let firstDayIndex = firstDay.getDay();
+                
                 // Add empty cells for days before the first day of the month
-                for (let i = 0; i < startDay; i++) {
+                for (let i = 0; i < firstDayIndex; i++) {
                     const emptyCell = document.createElement('div');
                     emptyCell.classList.add('calendar-day', 'other-month');
                     calendarDays.appendChild(emptyCell);
                 }
                 
-                // Add cells for each day of the month
-                for (let day = 1; day <= daysInMonth; day++) {
-                    const dayCell = document.createElement('div');
-                    dayCell.classList.add('calendar-day');
-                    dayCell.textContent = day;
+                // Add days of the month
+                const today = new Date();
+                for (let i = 1; i <= daysInMonth; i++) {
+                    const dayElement = document.createElement('div');
+                    dayElement.classList.add('calendar-day');
+                    dayElement.textContent = i;
                     
-                    // Check if this day is today
-                    const today = new Date();
-                    if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
-                        dayCell.classList.add('today');
+                    // Check if this is today
+                    if (i === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
+                        dayElement.classList.add('today');
                     }
                     
-                    // Check if this day is selected
-                    if (day === currentDate.getDate() && month === currentDate.getMonth() && year === currentDate.getFullYear()) {
-                        dayCell.classList.add('selected');
-                    }
-                    
-                    dayCell.addEventListener('click', () => {
-                        document.querySelectorAll('.calendar-day.selected').forEach(el => {
-                            el.classList.remove('selected');
+                    // Add click event
+                    dayElement.addEventListener('click', function() {
+                        // Remove selected class from all days
+                        document.querySelectorAll('.calendar-day').forEach(day => {
+                            day.classList.remove('selected');
                         });
-                        dayCell.classList.add('selected');
                         
-                        // Update current date
-                        currentDate = new Date(year, month, day);
-                        updateDateTime();
+                        // Add selected class to clicked day
+                        this.classList.add('selected');
                     });
                     
-                    calendarDays.appendChild(dayCell);
+                    calendarDays.appendChild(dayElement);
                 }
             }
+        }
+
+        // ========== QURAN VERSE FUNCTIONALITY ==========
+        function loadQuranVerse() {
+            const verseArabic = document.getElementById('verse-arabic');
+            const verseTranslation = document.getElementById('verse-translation');
+            const verseReference = document.getElementById('verse-reference');
             
-            // --- Event Listeners ---
+            // Remove loading animation
+            verseArabic.classList.remove('loading');
+            verseTranslation.classList.remove('loading');
             
-            // Search form submission
-            searchForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                
-                const query = searchInput.value.trim();
-                if (query) {
-                    // Show puzzle loading animation
-                    showPuzzleLoading();
-                    
-                    // Perform search after a short delay to show animation
-                    setTimeout(() => {
-                        const searchUrl = searchEngines[currentEngine].url + encodeURIComponent(query);
-                        window.open(searchUrl, '_blank');
-                    }, 1500);
+            // Fallback verses if API fails
+            const fallbackVerses = [
+                {
+                    arabic: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
+                    translation: "Dengan nama Allah Yang Maha Pengasih, Maha Penyayang.",
+                    reference: "Al-Fatihah: 1"
+                },
+                {
+                    arabic: "قُلْ هُوَ اللَّهُ أَحَدٌ",
+                    translation: "Katakanlah (Muhammad), 'Dialah Allah, Yang Maha Esa.'",
+                    reference: "Al-Ikhlas: 1"
+                },
+                {
+                    arabic: "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ",
+                    translation: "Hanya kepada Engkaulah kami menyembah dan hanya kepada Engkaulah kami memohon pertolongan.",
+                    reference: "Al-Fatihah: 5"
                 }
-            });
+            ];
             
-            // Search engine selection
-            engineOptions.forEach(option => {
-                option.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const engine = option.getAttribute('data-engine');
-                    setSearchEngine(engine);
-                });
-            });
+            const randomFallback = Math.floor(Math.random() * fallbackVerses.length);
+            const verse = fallbackVerses[randomFallback];
             
-            // Calendar toggle
-            calendarToggle.addEventListener('click', () => {
-                calendarContainer.classList.toggle('active');
-            });
+            verseArabic.textContent = verse.arabic;
+            verseTranslation.textContent = verse.translation;
+            verseReference.textContent = verse.reference;
             
-            // Calendar navigation
-            calendarPrev.addEventListener('click', () => {
-                calendarDate.setMonth(calendarDate.getMonth() - 1);
-                renderCalendar();
-            });
-            
-            calendarNext.addEventListener('click', () => {
-                calendarDate.setMonth(calendarDate.getMonth() + 1);
-                renderCalendar();
-            });
-            
-            // Close calendar when clicking outside
-            document.addEventListener('click', (e) => {
-                if (calendarContainer.classList.contains('active') && 
-                    !calendarContainer.contains(e.target) && 
-                    !calendarToggle.contains(e.target)) {
-                    calendarContainer.classList.remove('active');
-                }
-            });
-            
-            // --- Initialize ---
-            
-            // Set initial search engine
-            setSearchEngine('google');
-            
-            // Update time immediately and set interval
-            updateDateTime();
-            setInterval(updateDateTime, 1000);
-            
-            // Fetch random Quran verse
-            fetchRandomVerse();
-            
-            // Render calendar
-            renderCalendar();
-            
-            // Hide puzzle loading animation initially
-            puzzleLoading.classList.remove('active');
-        });
+            verseArabic.classList.add('verse-slide-in');
+            verseTranslation.classList.add('verse-slide-in');
+        }
     </script>
 </body>
 </html>
