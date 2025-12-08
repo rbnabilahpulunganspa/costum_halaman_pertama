@@ -3,1197 +3,528 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beranda Baru</title>
+    <title>Beranda Dashboard</title>
     
-    <!-- Tailwind CSS for styling -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Google Fonts: Inter for main text, Noto Serif JP for aesthetic text -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     
-    <!-- Font Arabic -->
-    <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
-    
-    <!-- Custom CSS for theme, animations, and patterns -->
+    <!-- Icons (Lucide via UNPKG for lightweight speed) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <style>
-        /* Define custom fonts */
-        body {
-            font-family: 'Inter', sans-serif;
+        /* --- Base Settings --- */
+        :root {
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-bg: rgba(17, 24, 39, 0.7);
+            --glass-highlight: rgba(255, 255, 255, 0.05);
         }
 
-        .font-aesthetic {
-            font-family: 'Noto Serif JP', serif;
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0f172a;
+            color: #ffffff;
+            overflow-x: hidden;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        .font-serif-display {
+            font-family: 'Playfair Display', serif;
         }
         
         .font-arabic {
             font-family: 'Amiri', serif;
         }
 
-        /* Animated Gradient Background */
-        body {
-            background: linear-gradient(-45deg, #1a202c, #2d3748, #4a5568, #2c5282);
-            background-size: 400% 400%;
-            animation: gradientBG 20s ease infinite;
-            overflow-x: hidden; /* Prevent horizontal scrollbars */
+        /* --- Dynamic Background --- */
+        .bg-gradient-animated {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle at 0% 0%, #1e1b4b 0%, transparent 50%), 
+                        radial-gradient(circle at 100% 0%, #312e81 0%, transparent 50%), 
+                        radial-gradient(circle at 100% 100%, #1e3a8a 0%, transparent 50%), 
+                        radial-gradient(circle at 0% 100%, #0f172a 0%, transparent 50%);
+            background-size: 200% 200%;
+            animation: gradientMove 20s ease infinite;
+            z-index: -2;
         }
 
-        @keyframes gradientBG {
+        @keyframes gradientMove {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
-        /* Batik & Japanese Pattern Overlay */
-        .pattern-overlay {
-            position: absolute;
+        /* Subtle Batik Texture Overlay */
+        .batik-overlay {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            /* Batik Parang pattern (more prominent) */
-            background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M80 80c0-22.091-17.909-40-40-40S0 57.909 0 80h80zM0 0c0 22.091 17.909 40 40 40s40-17.909 40-40H0z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-            opacity: 0.5;
-            z-index: 1;
-        }
-        
-        /* Main container for content */
-        main {
-            z-index: 10;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            z-index: -1;
+            pointer-events: none;
         }
 
-        /* Custom dropdown for search engine selector */
-        .search-engine-selector { 
-            position: relative; 
-        }
-        .search-engine-dropdown {
-            display: none;
-            position: absolute;
-            top: 110%;
-            left: 0;
-            width: 140px;
-            z-index: 50;
-            animation: fadeIn 0.3s ease-out;
-        }
-        .search-engine-selector:hover .search-engine-dropdown { 
-            display: block; 
+        /* --- Glassmorphism Cards --- */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* General Animations */
+        .glass-card:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(30, 41, 59, 0.8);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        /* --- Animations --- */
+        .fade-in {
+            animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .fade-in-up {
-            animation: fadeInUp 0.8s ease-out forwards;
-            opacity: 0;
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .delay-1 { animation-delay: 0.2s; }
-        .delay-2 { animation-delay: 0.4s; }
-        .delay-3 { animation-delay: 0.6s; }
 
-        /* --- Decorative Animated Elements --- */
-        .decorative-elements {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: 2;
-            pointer-events: none; /* Make them unclickable */
+        /* Search Input Focus Animation */
+        .search-container:focus-within {
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.5), 0 8px 40px rgba(0,0,0,0.5);
+            transform: scale(1.01);
+            background: rgba(30, 41, 59, 0.9);
         }
 
-        /* Japanese Sakura Petals Animation */
-        .petal {
-            position: absolute;
-            background: rgba(255, 183, 197, 0.7);
-            border-radius: 150px 0;
-            width: 15px;
-            height: 20px;
-            animation: fall linear infinite;
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-        .petal:nth-child(2n) { animation-direction: reverse; }
-        .petal:nth-child(1) { left: 10%; animation-duration: 15s; animation-delay: -5s; }
-        .petal:nth-child(2) { left: 20%; animation-duration: 12s; animation-delay: -3s; }
-        .petal:nth-child(3) { left: 30%; animation-duration: 18s; animation-delay: -8s; }
-        .petal:nth-child(4) { left: 40%; animation-duration: 14s; animation-delay: -1s; }
-        .petal:nth-child(5) { left: 50%; animation-duration: 20s; animation-delay: -10s; }
-        .petal:nth-child(6) { left: 60%; animation-duration: 13s; animation-delay: -4s; }
-        .petal:nth-child(7) { left: 70%; animation-duration: 16s; animation-delay: -6s; }
-        .petal:nth-child(8) { left: 80%; animation-duration: 11s; animation-delay: -2s; }
-
-        @keyframes fall {
-            0% { top: -10%; transform: translateX(0) rotate(0); opacity: 1; }
-            100% { top: 110%; transform: translateX(100px) rotate(360deg); opacity: 0; }
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.1);
         }
-        
-        /* Chinese Lanterns */
-        .lantern {
-            position: absolute;
-            width: 60px;
-            height: 80px;
-            background: radial-gradient(circle at 50% 30%, #ff5e5e, #c70000);
-            border-radius: 45% 45% 40% 40%;
-            box-shadow: 0 0 20px 5px #ff5e5e, inset 0 -10px 15px rgba(0,0,0,0.3);
-            animation: sway 5s ease-in-out infinite;
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
         }
-        .lantern::before, .lantern::after {
-            content: '';
-            position: absolute;
-            background: #a67c00;
-        }
-        .lantern::before {
-            top: -5px; left: 15px; width: 30px; height: 10px; border-radius: 5px 5px 0 0;
-        }
-        .lantern::after {
-            bottom: -5px; left: 20px; width: 20px; height: 10px; border-radius: 0 0 5px 5px;
-        }
-        .lantern-1 { top: 5%; right: 10%; transform-origin: top center; animation-delay: -1s;}
-        .lantern-2 { top: 15%; left: 8%; transform-origin: top center; animation-delay: -3s;}
-
-        @keyframes sway {
-            0%, 100% { transform: rotate(-5deg); }
-            50% { transform: rotate(5deg); }
-        }
-        
-        /* Batik Elements */
-        .batik-element {
-            position: absolute;
-            opacity: 0.1;
-            pointer-events: none;
-        }
-        .batik-1 {
-            top: 10%;
-            right: 5%;
-            width: 120px;
-            height: 120px;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='none' stroke='%23ffffff' stroke-width='2' d='M20,20 C40,10 60,10 80,20 C90,40 90,60 80,80 C60,90 40,90 20,80 C10,60 10,40 20,20 Z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            animation: rotate 30s linear infinite;
-        }
-        .batik-2 {
-            bottom: 15%;
-            left: 5%;
-            width: 100px;
-            height: 100px;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='none' stroke='%23ffffff' stroke-width='2' d='M30,30 C50,20 70,20 90,30 C95,50 95,70 90,90 C70,95 50,95 30,90 C20,70 20,50 30,30 Z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            animation: rotateReverse 25s linear infinite;
-        }
-        
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        
-        @keyframes rotateReverse {
-            from { transform: rotate(360deg); }
-            to { transform: rotate(0deg); }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,255,255,0.3);
         }
 
-        /* Quran Verse Section */
-        .verse-container {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin-top: 2rem;
-            max-width: 600px;
-            width: 100%;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-            overflow: hidden;
-            min-height: 180px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .verse-arabic {
-            font-size: 1.8rem;
-            text-align: right;
-            line-height: 2.5;
-            margin-bottom: 1rem;
-            font-family: 'Amiri', serif;
-        }
-
-        .verse-translation {
-            font-size: 1rem;
-            line-height: 1.6;
-            text-align: center;
-            font-style: italic;
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        .verse-reference {
-            margin-top: 0.5rem;
-            font-size: 0.9rem;
-            text-align: center;
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        /* Animation for verse */
-        @keyframes verseSlideIn {
-            0% {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .verse-slide-in {
-            animation: verseSlideIn 1s ease-out forwards;
-        }
-
-        /* Loading animation */
-        @keyframes pulse {
-            0% { opacity: 0.6; }
-            50% { opacity: 1; }
-            100% { opacity: 0.6; }
-        }
-
-        .loading {
-            animation: pulse 1.5s infinite;
-            text-align: center;
-        }
-        
-        /* Puzzle Loading Animation - REVISED */
-        .puzzle-loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-        
-        .puzzle-loading.active {
-            opacity: 1;
-            pointer-events: all;
-        }
-        
-        .puzzle-container {
-            width: 300px;
-            height: 300px;
-            position: relative;
-            margin-bottom: 2rem;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-template-rows: repeat(4, 1fr);
-            gap: 4px;
-        }
-        
-        .puzzle-piece {
-            width: 100%;
-            height: 100%;
-            background-color: #3b82f6;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(59, 130, 246, 0.7);
-            opacity: 0;
-            animation: assemblePuzzle 1s forwards;
-        }
-        
-        .puzzle-piece:nth-child(1) { animation-delay: 0.2s; }
-        .puzzle-piece:nth-child(2) { animation-delay: 0.4s; }
-        .puzzle-piece:nth-child(3) { animation-delay: 0.6s; }
-        .puzzle-piece:nth-child(4) { animation-delay: 0.8s; }
-        .puzzle-piece:nth-child(5) { animation-delay: 1.0s; }
-        .puzzle-piece:nth-child(6) { animation-delay: 1.2s; }
-        .puzzle-piece:nth-child(7) { animation-delay: 1.4s; }
-        .puzzle-piece:nth-child(8) { animation-delay: 1.6s; }
-        .puzzle-piece:nth-child(9) { animation-delay: 1.8s; }
-        .puzzle-piece:nth-child(10) { animation-delay: 2.0s; }
-        .puzzle-piece:nth-child(11) { animation-delay: 2.2s; }
-        .puzzle-piece:nth-child(12) { animation-delay: 2.4s; }
-        .puzzle-piece:nth-child(13) { animation-delay: 2.6s; }
-        .puzzle-piece:nth-child(14) { animation-delay: 2.8s; }
-        .puzzle-piece:nth-child(15) { animation-delay: 3.0s; }
-        .puzzle-piece:nth-child(16) { animation-delay: 3.2s; }
-        
-        @keyframes assemblePuzzle {
-            0% {
-                opacity: 0;
-                transform: translate(calc(-100px + 200px * random()), calc(-100px + 200px * random())) rotate(90deg);
-            }
-            100% {
-                opacity: 1;
-                transform: translate(0, 0) rotate(0deg);
-            }
-        }
-        
-        .loading-text {
-            color: white;
-            font-size: 1.5rem;
-            margin-top: 1rem;
-            text-align: center;
-        }
-        
-        .loading-dots:after {
-            content: '';
-            animation: loadingDots 1.5s infinite;
-        }
-        
-        @keyframes loadingDots {
-            0%, 20% { content: '.'; }
-            40% { content: '..'; }
-            60%, 100% { content: '...'; }
-        }
-        
-        .countdown {
-            font-size: 1.2rem;
-            color: #3b82f6;
-            margin-top: 0.5rem;
-        }
-
-        /* Calendar View - REVISED */
-        .calendar-toggle {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-left: 10px;
-        }
-        
-        .calendar-toggle:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.1);
-        }
-        
-        .calendar-container {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 320px;
-            background: rgba(26, 32, 44, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 1rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-            z-index: 100;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-        
-        .calendar-container.active {
-            opacity: 1;
-            visibility: visible;
-        }
-        
-        .calendar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-        
-        .calendar-nav {
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
-            font-size: 1.2rem;
-            padding: 0.5rem;
-        }
-        
-        .calendar-title {
-            font-weight: 600;
-            text-align: center;
-            flex-grow: 1;
-            margin: 0 10px;
-        }
-        
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 4px;
-        }
-        
-        .calendar-weekday {
-            text-align: center;
-            font-size: 0.8rem;
-            padding: 0.5rem 0;
-            color: rgba(255, 255, 255, 0.7);
-        }
-        
+        /* Calendar Styles */
         .calendar-day {
-            text-align: center;
-            padding: 0.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
             aspect-ratio: 1;
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
         }
-        
-        .calendar-day:hover {
-            background: rgba(59, 130, 246, 0.3);
+        .calendar-day:hover:not(.empty) {
+            background: rgba(255,255,255,0.1);
         }
-        
         .calendar-day.today {
-            background: #3b82f6;
+            background: #6366f1;
             color: white;
             font-weight: bold;
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
         }
-        
-        .calendar-day.other-month {
-            color: rgba(255, 255, 255, 0.3);
-        }
-        
         .calendar-day.selected {
-            background: rgba(255, 255, 255, 0.2);
-            font-weight: bold;
+            border: 2px solid #6366f1;
         }
-
-        /* Link Loading Animation */
-        .link-loading {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
+        
+        /* Floating Particles */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 10s infinite linear;
             pointer-events: none;
-            transition: opacity 0.3s ease;
         }
-        
-        .link-loading.active {
-            opacity: 1;
-            pointer-events: all;
-        }
-        
-        .portal-animation {
-            width: 200px;
-            height: 200px;
-            position: relative;
-            margin-bottom: 2rem;
-        }
-        
-        .portal-ring {
-            position: absolute;
-            border-radius: 50%;
-            border: 3px solid transparent;
-            animation: portalSpin 2s linear infinite;
-        }
-        
-        .portal-ring-1 {
-            width: 200px;
-            height: 200px;
-            border-top-color: #3b82f6;
-            animation-duration: 3s;
-        }
-        
-        .portal-ring-2 {
-            width: 160px;
-            height: 160px;
-            top: 20px;
-            left: 20px;
-            border-right-color: #8b5cf6;
-            animation-duration: 2s;
-            animation-direction: reverse;
-        }
-        
-        .portal-ring-3 {
-            width: 120px;
-            height: 120px;
-            top: 40px;
-            left: 40px;
-            border-bottom-color: #10b981;
-            animation-duration: 1.5s;
-        }
-        
-        .portal-center {
-            position: absolute;
-            width: 80px;
-            height: 80px;
-            top: 60px;
-            left: 60px;
-            background: radial-gradient(circle, #ffffff 0%, #3b82f6 100%);
-            border-radius: 50%;
-            animation: portalPulse 1.5s ease-in-out infinite alternate;
-        }
-        
-        @keyframes portalSpin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        @keyframes portalPulse {
-            0% { transform: scale(1); opacity: 0.7; }
-            100% { transform: scale(1.2); opacity: 1; }
-        }
-        
-        .link-loading-text {
-            color: white;
-            font-size: 1.5rem;
-            text-align: center;
-            margin-top: 1rem;
+        @keyframes float {
+            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { transform: translateY(-20vh) translateX(20px); opacity: 0; }
         }
 
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            #time {
-                font-size: 4rem !important;
-            }
-            
-            .verse-arabic {
-                font-size: 1.5rem;
-                line-height: 2;
-            }
-            
-            .verse-container {
-                padding: 1rem;
-                margin: 1rem 0.5rem;
-            }
-            
-            .lantern, .batik-element {
-                transform: scale(0.7);
-            }
-            
-            .petal {
-                transform: scale(0.8);
-            }
-            
-            .search-engine-dropdown {
-                width: 120px;
-                left: -20px;
-            }
-            
-            .puzzle-container {
-                width: 250px;
-                height: 250px;
-            }
-            
-            .calendar-container {
-                width: 300px;
-                left: 50%;
-                transform: translateX(-50%);
-            }
-            
-            .portal-animation {
-                width: 150px;
-                height: 150px;
-            }
-            
-            .portal-ring-1 {
-                width: 150px;
-                height: 150px;
-            }
-            
-            .portal-ring-2 {
-                width: 120px;
-                height: 120px;
-                top: 15px;
-                left: 15px;
-            }
-            
-            .portal-ring-3 {
-                width: 90px;
-                height: 90px;
-                top: 30px;
-                left: 30px;
-            }
-            
-            .portal-center {
-                width: 60px;
-                height: 60px;
-                top: 45px;
-                left: 45px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            #time {
-                font-size: 3rem !important;
-            }
-            
-            .verse-arabic {
-                font-size: 1.3rem;
-            }
-            
-            .verse-translation {
-                font-size: 0.9rem;
-            }
-            
-            .ai-links {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-            
-            .search-engine-dropdown {
-                left: -40px;
-                width: 150px;
-            }
-            
-            .puzzle-container {
-                width: 200px;
-                height: 200px;
-            }
-            
-            .loading-text {
-                font-size: 1.2rem;
-            }
-            
-            .calendar-container {
-                width: 280px;
-            }
-            
-            .portal-animation {
-                width: 120px;
-                height: 120px;
-            }
-            
-            .portal-ring-1 {
-                width: 120px;
-                height: 120px;
-            }
-            
-            .portal-ring-2 {
-                width: 90px;
-                height: 90px;
-                top: 15px;
-                left: 15px;
-            }
-            
-            .portal-ring-3 {
-                width: 60px;
-                height: 60px;
-                top: 30px;
-                left: 30px;
-            }
-            
-            .portal-center {
-                width: 40px;
-                height: 40px;
-                top: 40px;
-                left: 40px;
-            }
-            
-            .link-loading-text {
-                font-size: 1.2rem;
-            }
-        }
     </style>
 </head>
-<body class="bg-gray-900 text-white flex items-center justify-center min-h-screen py-4">
+<body class="flex flex-col items-center min-h-screen px-4 py-8 md:py-12 selection:bg-indigo-500 selection:text-white">
+
+    <!-- Backgrounds -->
+    <div class="bg-gradient-animated"></div>
+    <div class="batik-overlay"></div>
     
-    <!-- Background Patterns and Animations -->
-    <div class="pattern-overlay"></div>
-    <div class="decorative-elements">
-        <!-- Sakura Petals -->
-        <div class="petal"></div><div class="petal"></div><div class="petal"></div>
-        <div class="petal"></div><div class="petal"></div><div class="petal"></div>
-        <div class="petal"></div><div class="petal"></div>
-        <!-- Chinese Lanterns -->
-        <div class="lantern lantern-1"></div>
-        <div class="lantern lantern-2"></div>
-        <!-- Batik Elements -->
-        <div class="batik-element batik-1"></div>
-        <div class="batik-element batik-2"></div>
-    </div>
-    
-    <!-- Puzzle Loading Animation -->
-    <div class="puzzle-loading" id="puzzle-loading">
-        <div class="puzzle-container">
-            <div class="puzzle-piece"></div>
-            <div class="puzzle-piece"></div>
-            <div class="puzzle-piece"></div>
-            <div class="puzzle-piece"></div>
-            <div class="puzzle-piece"></div>
-            <div class="puzzle-piece"></div>
-            <div class="puzzle-piece"></div>
-            <div class="puzzle-piece"></div>
-            <div class="puzzle-piece"></div>
-            <div class="puzzle-piece"></div>
-            <div class="puzzle-piece"></div>
-            <div class="puzzle-piece"></div>
-            <div class="puzzle-piece"></div>
-            <div class="puzzle-piece"></div>
-            <div class="puzzle-piece"></div>
-            <div class="puzzle-piece"></div>
-        </div>
-        <div class="loading-text">Menyusun koneksi global<span class="loading-dots"></span></div>
-        <div class="countdown" id="countdown">3</div>
-    </div>
+    <!-- Particles Container (JS will fill this) -->
+    <div id="particles" class="fixed inset-0 pointer-events-none z-[-1]"></div>
 
-    <!-- Link Loading Animation -->
-    <div class="link-loading" id="link-loading">
-        <div class="portal-animation">
-            <div class="portal-ring portal-ring-1"></div>
-            <div class="portal-ring portal-ring-2"></div>
-            <div class="portal-ring portal-ring-3"></div>
-            <div class="portal-center"></div>
-        </div>
-        <div class="link-loading-text" id="link-loading-text">Membuka portal...</div>
-    </div>
+    <!-- Main Content Container -->
+    <main class="w-full max-w-5xl mx-auto flex flex-col gap-8 relative z-10">
 
-    <!-- Main Content -->
-    <main class="relative flex flex-col items-center justify-center w-full max-w-2xl px-4">
-        
-        <!-- Clock and Date -->
-        <div class="text-center mb-6 md:mb-8 fade-in-up delay-1 relative">
-            <h1 id="time" class="text-6xl md:text-8xl font-bold tracking-tighter font-aesthetic">00:00:00</h1>
-            <div class="flex items-center justify-center mt-2">
-                <p id="date" class="text-lg md:text-xl text-gray-300 font-light">Memuat...</p>
-                <div class="calendar-toggle" id="calendar-toggle">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                        <line x1="16" y1="2" x2="16" y2="6"></line>
-                        <line x1="8" y1="2" x2="8" y2="6"></line>
-                        <line x1="3" y1="10" x2="21" y2="10"></line>
-                    </svg>
-                </div>
+        <!-- Top Section: Date & Greeting -->
+        <header class="text-center space-y-2 fade-in">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-sm text-indigo-200 backdrop-blur-sm mb-4">
+                <i data-lucide="sparkles" class="w-3 h-3"></i>
+                <span id="greeting-text">Selamat Datang</span>
             </div>
-        </div>
+            <h1 id="time-display" class="text-7xl md:text-9xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 font-serif-display drop-shadow-2xl">
+                00:00
+            </h1>
+            <p id="date-display" class="text-lg md:text-xl text-indigo-200/80 font-light tracking-wide uppercase">
+                Memuat tanggal...
+            </p>
+        </header>
 
-        <!-- Calendar View -->
-        <div class="calendar-container" id="calendar-container">
-            <div class="calendar-header">
-                <button class="calendar-nav" id="calendar-prev">&lt;</button>
-                <h3 class="calendar-title" id="calendar-month-year"></h3>
-                <button class="calendar-nav" id="calendar-next">&gt;</button>
-            </div>
-            <div class="calendar-grid" id="calendar-weekdays">
-                <div class="calendar-weekday">Min</div>
-                <div class="calendar-weekday">Sen</div>
-                <div class="calendar-weekday">Sel</div>
-                <div class="calendar-weekday">Rab</div>
-                <div class="calendar-weekday">Kam</div>
-                <div class="calendar-weekday">Jum</div>
-                <div class="calendar-weekday">Sab</div>
-            </div>
-            <div class="calendar-grid" id="calendar-days"></div>
-        </div>
-
-        <!-- Search Form -->
-        <form id="search-form" class="w-full mb-6 fade-in-up delay-2">
-            <div class="flex items-center bg-gray-800/60 backdrop-blur-sm border border-gray-600 rounded-full shadow-lg overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-blue-400">
-                <!-- Search Engine Selector -->
-                <div class="search-engine-selector">
-                    <button type="button" id="current-engine" class="flex items-center p-3 text-gray-300 hover:bg-gray-700/50 transition-colors duration-200 rounded-full">
-                        <span id="engine-icon"></span>
+        <!-- Search Section -->
+        <section class="w-full max-w-2xl mx-auto fade-in delay-100 relative z-20">
+            <form id="search-form" class="search-container group relative flex items-center w-full bg-gray-900/40 border border-white/10 rounded-2xl transition-all duration-300 backdrop-blur-xl">
+                
+                <!-- Engine Selector -->
+                <div class="relative">
+                    <button type="button" id="engine-btn" class="flex items-center gap-2 pl-4 pr-3 py-4 text-gray-400 hover:text-white transition-colors border-r border-white/10">
+                        <img id="engine-icon" src="https://www.google.com/s2/favicons?domain=google.com&sz=32" alt="Engine" class="w-5 h-5 rounded-sm opacity-80 group-hover:opacity-100">
+                        <i data-lucide="chevron-down" class="w-4 h-4"></i>
                     </button>
-                    <div class="search-engine-dropdown bg-gray-800 border border-gray-700 rounded-lg shadow-xl overflow-hidden">
-                        <a href="#" class="engine-option flex items-center p-3 hover:bg-blue-500/20 transition-colors" data-engine="google">
-                            <img src="https://www.google.com/s2/favicons?domain=google.com" alt="Google" class="w-5 h-5 mr-3"> Google
-                        </a>
-                        <a href="#" class="engine-option flex items-center p-3 hover:bg-blue-500/20 transition-colors" data-engine="duckduckgo">
-                            <img src="https://www.google.com/s2/favicons?domain=duckduckgo.com" alt="DuckDuckGo" class="w-5 h-5 mr-3"> DuckDuckGo
-                        </a>
-                        <a href="#" class="engine-option flex items-center p-3 hover:bg-blue-500/20 transition-colors" data-engine="bing">
-                            <img src="https://www.google.com/s2/favicons?domain=bing.com" alt="Bing" class="w-5 h-5 mr-3"> Bing
-                        </a>
-                        <a href="#" class="engine-option flex items-center p-3 hover:bg-blue-500/20 transition-colors" data-engine="brave">
-                            <img src="https://www.google.com/s2/favicons?domain=search.brave.com" alt="Brave" class="w-5 h-5 mr-3"> Brave
-                        </a>
-                        <a href="#" class="engine-option flex items-center p-3 hover:bg-blue-500/20 transition-colors" data-engine="youtube">
-                            <img src="https://www.google.com/s2/favicons?domain=youtube.com" alt="YouTube" class="w-5 h-5 mr-3"> YouTube
-                        </a>
-                        <a href="#" class="engine-option flex items-center p-3 hover:bg-blue-500/20 transition-colors" data-engine="wikipedia">
-                            <img src="https://www.google.com/s2/favicons?domain=wikipedia.org" alt="Wikipedia" class="w-5 h-5 mr-3"> Wikipedia
-                        </a>
+                    
+                    <!-- Dropdown Menu -->
+                    <div id="engine-menu" class="hidden absolute top-full left-0 mt-2 w-48 bg-gray-900/95 border border-white/10 rounded-xl shadow-2xl backdrop-blur-xl overflow-hidden transform origin-top-left transition-all z-50">
+                        <div class="p-1">
+                            <button type="button" class="engine-option w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white rounded-lg transition-colors" data-engine="google">
+                                <img src="https://www.google.com/s2/favicons?domain=google.com" class="w-4 h-4"> Google
+                            </button>
+                            <button type="button" class="engine-option w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white rounded-lg transition-colors" data-engine="duckduckgo">
+                                <img src="https://www.google.com/s2/favicons?domain=duckduckgo.com" class="w-4 h-4"> DuckDuckGo
+                            </button>
+                            <button type="button" class="engine-option w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white rounded-lg transition-colors" data-engine="youtube">
+                                <img src="https://www.google.com/s2/favicons?domain=youtube.com" class="w-4 h-4"> YouTube
+                            </button>
+                            <button type="button" class="engine-option w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white rounded-lg transition-colors" data-engine="bing">
+                                <img src="https://www.google.com/s2/favicons?domain=bing.com" class="w-4 h-4"> Bing
+                            </button>
+                        </div>
                     </div>
                 </div>
+
+                <!-- Input Field -->
+                <input type="text" id="search-input" 
+                    class="w-full bg-transparent text-lg text-white placeholder-gray-500 px-4 py-4 focus:outline-none" 
+                    placeholder="Apa yang ingin Anda cari hari ini?" autocomplete="off" autofocus>
                 
-                <input type="text" id="search-input" placeholder="Cari di web..." class="w-full p-3 bg-transparent text-lg text-white placeholder-gray-400 focus:outline-none">
+                <!-- Search Button -->
+                <button type="submit" class="pr-4 pl-2 text-gray-400 hover:text-indigo-400 transition-colors">
+                    <i data-lucide="search" class="w-6 h-6"></i>
+                </button>
+            </form>
+        </section>
+
+        <!-- Main Grid Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 w-full fade-in delay-200">
+            
+            <!-- Left Column: Quick Links (Span 2) -->
+            <section class="lg:col-span-2 space-y-4">
+                <div class="flex items-center justify-between px-1">
+                    <h2 class="text-lg font-medium text-white/80 flex items-center gap-2">
+                        <i data-lucide="layout-grid" class="w-5 h-5 text-indigo-400"></i> Aplikasi & Tautan
+                    </h2>
+                </div>
                 
-                <button type="submit" class="p-3 text-gray-300 hover:bg-blue-500/50 hover:text-white transition-colors duration-200 rounded-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+                <div class="grid grid-cols-2 md:grid-cols-2 gap-4">
+                    <!-- Link Card 1 -->
+                    <a href="https://docs.google.com/spreadsheets/d/1KASOG3UIKxc1SiHl4EY-AIYY077wxdFMwSAquvo4LD4/edit?usp=sharing" class="glass-card p-5 rounded-2xl group flex flex-col justify-between h-32 relative overflow-hidden">
+                        <div class="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+                            <i data-lucide="table" class="w-16 h-16"></i>
+                        </div>
+                        <div class="p-2 bg-indigo-500/20 w-fit rounded-lg text-indigo-300 mb-2">
+                            <i data-lucide="clipboard-list" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-lg leading-tight">Daftar Reservasi</h3>
+                            <p class="text-xs text-gray-400 mt-1 group-hover:text-indigo-200 transition-colors">Cek jadwal & data</p>
+                        </div>
+                    </a>
+
+                    <!-- Link Card 2 -->
+                    <a href="https://rbnabilahpulunganadm.github.io/daftarsurat/" class="glass-card p-5 rounded-2xl group flex flex-col justify-between h-32 relative overflow-hidden">
+                        <div class="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+                            <i data-lucide="folder-open" class="w-16 h-16"></i>
+                        </div>
+                        <div class="p-2 bg-pink-500/20 w-fit rounded-lg text-pink-300 mb-2">
+                            <i data-lucide="files" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-lg leading-tight">Kumpulan Berkas</h3>
+                            <p class="text-xs text-gray-400 mt-1 group-hover:text-pink-200 transition-colors">Arsip surat menyurat</p>
+                        </div>
+                    </a>
+
+                    <!-- Link Card 3 -->
+                    <a href="https://rbnabilahpulunganadm.github.io/nomor_surat_keluar_resmi/" class="glass-card p-5 rounded-2xl group flex flex-col justify-between h-32 relative overflow-hidden">
+                        <div class="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+                            <i data-lucide="send" class="w-16 h-16"></i>
+                        </div>
+                        <div class="p-2 bg-emerald-500/20 w-fit rounded-lg text-emerald-300 mb-2">
+                            <i data-lucide="hash" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-lg leading-tight">No. Surat Keluar</h3>
+                            <p class="text-xs text-gray-400 mt-1 group-hover:text-emerald-200 transition-colors">Generator nomor resmi</p>
+                        </div>
+                    </a>
+
+                    <!-- Link Card 4 -->
+                    <a href="https://rbnabilahpulunganadm.github.io/reservasi_pengunjung_NPMABS/" class="glass-card p-5 rounded-2xl group flex flex-col justify-between h-32 relative overflow-hidden">
+                        <div class="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+                            <i data-lucide="users" class="w-16 h-16"></i>
+                        </div>
+                        <div class="p-2 bg-cyan-500/20 w-fit rounded-lg text-cyan-300 mb-2">
+                            <i data-lucide="laptop" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-lg leading-tight">App Reservasi</h3>
+                            <p class="text-xs text-gray-400 mt-1 group-hover:text-cyan-200 transition-colors">Sistem pengunjung</p>
+                        </div>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Right Column: Widgets (Calendar) -->
+            <section class="lg:col-span-1 space-y-4">
+                 <div class="flex items-center justify-between px-1">
+                    <h2 class="text-lg font-medium text-white/80 flex items-center gap-2">
+                        <i data-lucide="calendar" class="w-5 h-5 text-indigo-400"></i> Kalender
+                    </h2>
+                    <div class="flex gap-1">
+                        <button id="cal-prev" class="p-1 hover:bg-white/10 rounded"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+                        <button id="cal-next" class="p-1 hover:bg-white/10 rounded"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+                    </div>
+                </div>
+
+                <div class="glass-card p-5 rounded-2xl">
+                    <div class="text-center font-semibold mb-4 text-indigo-200" id="calendar-title">Month Year</div>
+                    <div class="grid grid-cols-7 text-center text-xs text-gray-500 mb-2 font-medium">
+                        <div>Min</div><div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div>
+                    </div>
+                    <div id="calendar-grid" class="grid grid-cols-7 gap-1 text-sm">
+                        <!-- JS renders here -->
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Bottom Section: Quran Verse -->
+        <section class="w-full fade-in delay-300">
+            <div class="glass-card rounded-2xl p-6 md:p-8 relative overflow-hidden text-center group">
+                <!-- Decorative Quotes Icon -->
+                <div class="absolute top-4 left-4 text-white/5">
+                    <i data-lucide="quote" class="w-12 h-12 rotate-180"></i>
+                </div>
+
+                <div class="relative z-10 max-w-3xl mx-auto space-y-4">
+                    <p id="quran-arabic" class="font-arabic text-3xl md:text-4xl leading-loose" dir="rtl">
+                        بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+                    </p>
+                    <p id="quran-translation" class="text-gray-300 italic font-light text-sm md:text-base">
+                        "Dengan nama Allah Yang Maha Pengasih, Maha Penyayang."
+                    </p>
+                    <div class="inline-block px-3 py-1 bg-white/5 rounded-full text-xs text-indigo-300 border border-white/5 mt-2">
+                        <span id="quran-ref">Al-Fatihah: 1</span>
+                    </div>
+                </div>
+
+                <!-- Refresh Button -->
+                <button onclick="loadRandomVerse()" class="absolute bottom-4 right-4 p-2 text-gray-500 hover:text-white hover:bg-white/10 rounded-full transition-all opacity-0 group-hover:opacity-100" title="Ayat Baru">
+                    <i data-lucide="refresh-cw" class="w-4 h-4"></i>
                 </button>
             </div>
-        </form>
+        </section>
 
-        <!-- AI Quick Links - SEMUA LINK DIPERBAIKI -->
-        <div class="flex flex-wrap justify-center gap-4 fade-in-up delay-3 ai-links">
-            <a href="https://docs.google.com/spreadsheets/d/1KASOG3UIKxc1SiHl4EY-AIYY077wxdFMwSAquvo4LD4/edit?usp=sharing" class="quick-link flex items-center space-x-2 px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-full hover:bg-purple-500/30 hover:border-purple-400 transition-all duration-300 transform hover:scale-105 shadow-md" data-name="Daftar Reservasi">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="text-purple-300"><path d="M12.465 2.152a.75.75 0 00-.93 0L2.868 8.16a.75.75 0 00-.218.668c.06.26.25.47.5.522l4.935 1.057a.75.75 0 01.553.553l1.057 4.935c.051.25.262.44.522.5.258.06.52-.09.668-.218l6.008-8.667a.75.75 0 000-.93L12.465 2.152zm-1.686 8.183a.75.75 0 01-1.06-1.06l3.25-3.25a.75.75 0 011.06 1.06l-3.25 3.25zM4.777 20.25a.75.75 0 00.5.25h.212a.75.75 0 00.520-.212l7.84-7.84a.75.75 0 00-1.06-1.06l-7.84 7.84c-.293.293-.316.747-.072 1.022zM18.75 3a.75.75 0 00-.75.75v3a.75.75 0 001.5 0v-3a.75.75 0 00-.75-.75z"/></svg>
-                <span class="text-sm font-medium text-gray-200">DAFTAR RESERVASI</span>
-            </a>
-            
-            <a href="https://rbnabilahpulunganadm.github.io/daftarsurat/" class="quick-link flex items-center space-x-2 px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-full hover:bg-purple-500/30 hover:border-purple-400 transition-all duration-300 transform hover:scale-105 shadow-md" data-name="Kumpulan Berkas">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="text-purple-300"><path d="M12.465 2.152a.75.75 0 00-.93 0L2.868 8.16a.75.75 0 00-.218.668c.06.26.25.47.5.522l4.935 1.057a.75.75 0 01.553.553l1.057 4.935c.051.25.262.44.522.5.258.06.52-.09.668-.218l6.008-8.667a.75.75 0 000-.93L12.465 2.152zm-1.686 8.183a.75.75 0 01-1.06-1.06l3.25-3.25a.75.75 0 011.06 1.06l-3.25 3.25zM4.777 20.25a.75.75 0 00.5.25h.212a.75.75 0 00.520-.212l7.84-7.84a.75.75 0 00-1.06-1.06l-7.84 7.84c-.293.293-.316.747-.072 1.022zM18.75 3a.75.75 0 00-.75.75v3a.75.75 0 001.5 0v-3a.75.75 0 00-.75-.75z"/></svg>
-                <span class="text-sm font-medium text-gray-200">KUMPULAN BERKAS</span>
-            </a>
-            
-            <a href="https://rbnabilahpulunganadm.github.io/nomor_surat_keluar_resmi/" class="quick-link flex items-center space-x-2 px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-full hover:bg-purple-500/30 hover:border-purple-400 transition-all duration-300 transform hover:scale-105 shadow-md" data-name="Nomor Surat Keluar">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="text-purple-300"><path d="M12.465 2.152a.75.75 0 00-.93 0L2.868 8.16a.75.75 0 00-.218.668c.06.26.25.47.5.522l4.935 1.057a.75.75 0 01.553.553l1.057 4.935c.051.25.262.44.522.5.258.06.52-.09.668-.218l6.008-8.667a.75.75 0 000-.93L12.465 2.152zm-1.686 8.183a.75.75 0 01-1.06-1.06l3.25-3.25a.75.75 0 011.06 1.06l-3.25 3.25zM4.777 20.25a.75.75 0 00.5.25h.212a.75.75 0 00.520-.212l7.84-7.84a.75.75 0 00-1.06-1.06l-7.84 7.84c-.293.293-.316.747-.072 1.022zM18.75 3a.75.75 0 00-.75.75v3a.75.75 0 001.5 0v-3a.75.75 0 00-.75-.75z"/></svg>
-                <span class="text-sm font-medium text-gray-200">NOMOR SURAT KELUAR</span>
-            </a>
-            
-            <a href="https://rbnabilahpulunganadm.github.io/reservasi_pengunjung_NPMABS/" class="quick-link flex items-center space-x-2 px-4 py-2 bg-gray-800/50 border border-gray-700 rounded-full hover:bg-cyan-500/30 hover:border-cyan-400 transition-all duration-300 transform hover:scale-105 shadow-md" data-name="Aplikasi Reservasi">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-cyan-300"><path d="M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20Z"/><path d="M12 12a5 5 0 1 1 0-10 5 5 0 0 1 0 10Z"/><path d="M12 12h.01"/></svg>
-                <span class="text-sm font-medium text-gray-200">APLIKASI RESERVASI</span>
-            </a>
-        </div>
-
-        <!-- Quran Verse Section -->
-        <div class="verse-container fade-in-up delay-3">
-            <div class="verse-arabic loading" id="verse-arabic">Memuat ayat...</div>
-            <div class="verse-translation loading" id="verse-translation">Memuat terjemahan...</div>
-            <div class="verse-reference" id="verse-reference"></div>
-        </div>
+        <footer class="text-center text-xs text-gray-600 pb-4">
+            &copy; 2025 Dashboard Pribadi. Dibuat dengan Efisiensi.
+        </footer>
 
     </main>
 
     <script>
-        // ========== LOADING ANIMATION ==========
-        document.addEventListener('DOMContentLoaded', function() {
-            const puzzleLoading = document.getElementById('puzzle-loading');
-            const countdownElement = document.getElementById('countdown');
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // --- Clock & Greeting Logic ---
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const timeString = ${hours}:${minutes};
             
-            // Show loading animation
-            puzzleLoading.classList.add('active');
+            document.getElementById('time-display').textContent = timeString;
             
-            let countdown = 3;
-            countdownElement.textContent = countdown;
+            // Date formatting (Indonesia)
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('date-display').textContent = now.toLocaleDateString('id-ID', options);
+
+            // Greeting Logic
+            const h = now.getHours();
+            let greet = "Selamat Malam";
+            let icon = "moon";
             
-            const countdownInterval = setInterval(() => {
-                countdown--;
-                countdownElement.textContent = countdown;
-                
-                if (countdown <= 0) {
-                    clearInterval(countdownInterval);
-                    // Hide loading animation after puzzle animation completes
-                    setTimeout(() => {
-                        puzzleLoading.classList.remove('active');
-                    }, 500);
-                }
-            }, 1000);
+            if (h >= 4 && h < 11) { greet = "Selamat Pagi"; icon = "sun"; }
+            else if (h >= 11 && h < 15) { greet = "Selamat Siang"; icon = "sun"; }
+            else if (h >= 15 && h < 18) { greet = "Selamat Sore"; icon = "cloud-sun"; }
             
-            // Initialize all features after loading
-            setTimeout(() => {
-                initializeClock();
-                initializeSearch();
-                initializeCalendar();
-                initializeQuickLinks();
-                loadQuranVerse();
-            }, 3500);
+            document.getElementById('greeting-text').innerHTML = ${greet};
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // --- Search Logic ---
+        const searchConfig = {
+            google: { url: 'https://www.google.com/search?q=', icon: 'https://www.google.com/s2/favicons?domain=google.com&sz=32' },
+            duckduckgo: { url: 'https://duckduckgo.com/?q=', icon: 'https://www.google.com/s2/favicons?domain=duckduckgo.com&sz=32' },
+            bing: { url: 'https://www.bing.com/search?q=', icon: 'https://www.google.com/s2/favicons?domain=bing.com&sz=32' },
+            youtube: { url: 'https://www.youtube.com/results?search_query=', icon: 'https://www.google.com/s2/favicons?domain=youtube.com&sz=32' }
+        };
+        
+        let currentEngine = 'google';
+        const engineBtn = document.getElementById('engine-btn');
+        const engineMenu = document.getElementById('engine-menu');
+        const engineIcon = document.getElementById('engine-icon');
+        const searchForm = document.getElementById('search-form');
+        const searchInput = document.getElementById('search-input');
+
+        // Toggle Dropdown
+        engineBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            engineMenu.classList.toggle('hidden');
         });
 
-        // ========== CLOCK FUNCTIONALITY ==========
-        function initializeClock() {
-            function updateTime() {
-                const now = new Date();
-                const timeElement = document.getElementById('time');
-                const dateElement = document.getElementById('date');
-                
-                // Format time
-                const hours = String(now.getHours()).padStart(2, '0');
-                const minutes = String(now.getMinutes()).padStart(2, '0');
-                const seconds = String(now.getSeconds()).padStart(2, '0');
-                timeElement.textContent = `${hours}:${minutes}:${seconds}`;
-                
-                // Format date
-                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-                dateElement.textContent = now.toLocaleDateString('id-ID', options);
-            }
-            
-            updateTime();
-            setInterval(updateTime, 1000);
-        }
+        // Close dropdown when clicking outside
+        document.addEventListener('click', () => {
+            engineMenu.classList.add('hidden');
+        });
 
-        // ========== SEARCH FUNCTIONALITY ==========
-        function initializeSearch() {
-            const searchForm = document.getElementById('search-form');
-            const searchInput = document.getElementById('search-input');
-            const currentEngine = document.getElementById('current-engine');
-            const engineIcon = document.getElementById('engine-icon');
-            const engineOptions = document.querySelectorAll('.engine-option');
-            
-            // Default search engine
-            let selectedEngine = 'google';
-            
-            // Set initial engine icon
-            updateEngineIcon();
-            
-            // Handle search form submission
-            searchForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const query = searchInput.value.trim();
-                
-                if (query) {
-                    let searchUrl;
-                    
-                    switch(selectedEngine) {
-                        case 'google':
-                            searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
-                            break;
-                        case 'duckduckgo':
-                            searchUrl = `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
-                            break;
-                        case 'bing':
-                            searchUrl = `https://www.bing.com/search?q=${encodeURIComponent(query)}`;
-                            break;
-                        case 'brave':
-                            searchUrl = `https://search.brave.com/search?q=${encodeURIComponent(query)}`;
-                            break;
-                        case 'youtube':
-                            searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
-                            break;
-                        case 'wikipedia':
-                            searchUrl = `https://id.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(query)}`;
-                            break;
-                        default:
-                            searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
-                    }
-                    
-                    // Show loading animation for search
-                    showLinkLoading(`Mencari dengan ${selectedEngine}...`);
-                    
-                    setTimeout(() => {
-                        window.location.href = searchUrl;
-                    }, 2000);
-                }
+        // Select Engine
+        document.querySelectorAll('.engine-option').forEach(btn => {
+            btn.addEventListener('click', () => {
+                currentEngine = btn.dataset.engine;
+                engineIcon.src = searchConfig[currentEngine].icon;
+                searchInput.placeholder = Cari di ${currentEngine.charAt(0).toUpperCase() + currentEngine.slice(1)}...;
+                searchInput.focus();
             });
+        });
+
+        // Submit Search
+        searchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const query = searchInput.value.trim();
+            if(query) {
+                window.location.href = searchConfig[currentEngine].url + encodeURIComponent(query);
+            }
+        });
+
+        // --- Calendar Logic ---
+        let calDate = new Date();
+        const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        
+        function renderCalendar() {
+            const year = calDate.getFullYear();
+            const month = calDate.getMonth();
             
-            // Handle search engine selection
-            engineOptions.forEach(option => {
-                option.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    selectedEngine = this.getAttribute('data-engine');
-                    updateEngineIcon();
-                });
-            });
+            document.getElementById('calendar-title').textContent = ${monthNames[month]} ${year};
             
-            function updateEngineIcon() {
-                let iconUrl;
-                let engineName;
+            const firstDay = new Date(year, month, 1).getDay(); // 0 = Sun
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const grid = document.getElementById('calendar-grid');
+            grid.innerHTML = '';
+
+            // Empty slots
+            for(let i=0; i<firstDay; i++) {
+                const div = document.createElement('div');
+                div.className = 'calendar-day empty';
+                grid.appendChild(div);
+            }
+
+            // Days
+            const today = new Date();
+            for(let i=1; i<=daysInMonth; i++) {
+                const div = document.createElement('div');
+                div.className = 'calendar-day';
+                div.textContent = i;
                 
-                switch(selectedEngine) {
-                    case 'google':
-                        iconUrl = 'https://www.google.com/s2/favicons?domain=google.com';
-                        engineName = 'Google';
-                        break;
-                    case 'duckduckgo':
-                        iconUrl = 'https://www.google.com/s2/favicons?domain=duckduckgo.com';
-                        engineName = 'DuckDuckGo';
-                        break;
-                    case 'bing':
-                        iconUrl = 'https://www.google.com/s2/favicons?domain=bing.com';
-                        engineName = 'Bing';
-                        break;
-                    case 'brave':
-                        iconUrl = 'https://www.google.com/s2/favicons?domain=search.brave.com';
-                        engineName = 'Brave';
-                        break;
-                    case 'youtube':
-                        iconUrl = 'https://www.google.com/s2/favicons?domain=youtube.com';
-                        engineName = 'YouTube';
-                        break;
-                    case 'wikipedia':
-                        iconUrl = 'https://www.google.com/s2/favicons?domain=wikipedia.org';
-                        engineName = 'Wikipedia';
-                        break;
-                    default:
-                        iconUrl = 'https://www.google.com/s2/favicons?domain=google.com';
-                        engineName = 'Google';
+                if(i === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+                    div.classList.add('today');
                 }
                 
-                engineIcon.innerHTML = `<img src="${iconUrl}" alt="${engineName}" class="w-5 h-5">`;
-                searchInput.placeholder = `Cari dengan ${engineName}...`;
+                grid.appendChild(div);
             }
         }
 
-        // ========== QUICK LINKS FUNCTIONALITY ==========
-        function initializeQuickLinks() {
-            const quickLinks = document.querySelectorAll('.quick-link');
-            
-            quickLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const url = this.href;
-                    const linkName = this.getAttribute('data-name');
-                    
-                    // Show loading animation
-                    showLinkLoading(`Membuka ${linkName}...`);
-                    
-                    // Navigate after animation
-                    setTimeout(() => {
-                        window.location.href = url;
-                    }, 2000);
-                });
-            });
-        }
+        document.getElementById('cal-prev').addEventListener('click', () => {
+            calDate.setMonth(calDate.getMonth() - 1);
+            renderCalendar();
+        });
+        document.getElementById('cal-next').addEventListener('click', () => {
+            calDate.setMonth(calDate.getMonth() + 1);
+            renderCalendar();
+        });
+        renderCalendar();
 
-        // ========== LINK LOADING ANIMATION ==========
-        function showLinkLoading(message) {
-            const linkLoading = document.getElementById('link-loading');
-            const linkLoadingText = document.getElementById('link-loading-text');
-            
-            linkLoadingText.textContent = message;
-            linkLoading.classList.add('active');
-        }
+        // --- Quran Verse Logic (Expanded Database for Offline Reliability) ---
+        const verses = [
+            { a: "فَإِنَّ مَعَ ٱلْعُسْرِ يُسْرًا", t: "Karena sesungguhnya sesudah kesulitan itu ada kemudahan.", r: "Al-Insyirah: 5" },
+            { a: "لَا يُكَلِّفُ ٱللَّهُ نَفْسًا إِلَّا وُسْعَهَا", t: "Allah tidak membebani seseorang melainkan sesuai dengan kesanggupannya.", r: "Al-Baqarah: 286" },
+            { a: "وَاسْتَعِينُوا بِالصَّبْرِ وَالصَّلَاةِ", t: "Jadikanlah sabar dan shalat sebagai penolongmu.", r: "Al-Baqarah: 45" },
+            { a: "إِنَّ اللَّهَ مَعَ الصَّابِرِينَ", t: "Sesungguhnya Allah beserta orang-orang yang sabar.", r: "Al-Baqarah: 153" },
+            { a: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً", t: "Ya Tuhan kami, berilah kami kebaikan di dunia dan kebaikan di akhirat.", r: "Al-Baqarah: 201" },
+            { a: "وَاللَّهُ يَعْلَمُ وَأَنتُمْ لَا تَعْلَمُونَ", t: "Allah mengetahui, sedang kamu tidak mengetahui.", r: "Al-Baqarah: 216" }
+        ];
 
-        // ========== CALENDAR FUNCTIONALITY ==========
-        function initializeCalendar() {
-            const calendarToggle = document.getElementById('calendar-toggle');
-            const calendarContainer = document.getElementById('calendar-container');
-            const calendarMonthYear = document.getElementById('calendar-month-year');
-            const calendarDays = document.getElementById('calendar-days');
-            const calendarPrev = document.getElementById('calendar-prev');
-            const calendarNext = document.getElementById('calendar-next');
+        function loadRandomVerse() {
+            const v = verses[Math.floor(Math.random() * verses.length)];
+            document.getElementById('quran-arabic').textContent = v.a;
+            document.getElementById('quran-translation').textContent = "${v.t}";
+            document.getElementById('quran-ref').textContent = v.r;
+        }
+        loadRandomVerse(); // Initial load
+
+        // --- Floating Particles (Simple & Fast) ---
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 15;
             
-            let currentDate = new Date();
-            let currentMonth = currentDate.getMonth();
-            let currentYear = currentDate.getFullYear();
-            
-            // Toggle calendar visibility
-            calendarToggle.addEventListener('click', function() {
-                calendarContainer.classList.toggle('active');
-                renderCalendar();
-            });
-            
-            // Close calendar when clicking outside
-            document.addEventListener('click', function(e) {
-                if (!calendarContainer.contains(e.target) && !calendarToggle.contains(e.target)) {
-                    calendarContainer.classList.remove('active');
-                }
-            });
-            
-            // Navigation
-            calendarPrev.addEventListener('click', function() {
-                currentMonth--;
-                if (currentMonth < 0) {
-                    currentMonth = 11;
-                    currentYear--;
-                }
-                renderCalendar();
-            });
-            
-            calendarNext.addEventListener('click', function() {
-                currentMonth++;
-                if (currentMonth > 11) {
-                    currentMonth = 0;
-                    currentYear++;
-                }
-                renderCalendar();
-            });
-            
-            function renderCalendar() {
-                // Update month and year title
-                const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni",
-                    "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-                calendarMonthYear.textContent = `${monthNames[currentMonth]} ${currentYear}`;
-                
-                // Clear previous days
-                calendarDays.innerHTML = '';
-                
-                // Get first day of month and number of days
-                const firstDay = new Date(currentYear, currentMonth, 1);
-                const lastDay = new Date(currentYear, currentMonth + 1, 0);
-                const daysInMonth = lastDay.getDate();
-                
-                // Get day of week for first day (0 = Sunday, 1 = Monday, etc.)
-                let firstDayIndex = firstDay.getDay();
-                
-                // Add empty cells for days before the first day of the month
-                for (let i = 0; i < firstDayIndex; i++) {
-                    const emptyCell = document.createElement('div');
-                    emptyCell.classList.add('calendar-day', 'other-month');
-                    calendarDays.appendChild(emptyCell);
-                }
-                
-                // Add days of the month
-                const today = new Date();
-                for (let i = 1; i <= daysInMonth; i++) {
-                    const dayElement = document.createElement('div');
-                    dayElement.classList.add('calendar-day');
-                    dayElement.textContent = i;
-                    
-                    // Check if this is today
-                    if (i === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
-                        dayElement.classList.add('today');
-                    }
-                    
-                    // Add click event
-                    dayElement.addEventListener('click', function() {
-                        // Remove selected class from all days
-                        document.querySelectorAll('.calendar-day').forEach(day => {
-                            day.classList.remove('selected');
-                        });
-                        
-                        // Add selected class to clicked day
-                        this.classList.add('selected');
-                    });
-                    
-                    calendarDays.appendChild(dayElement);
-                }
+            for(let i=0; i<particleCount; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random() * 100 + 'vw';
+                p.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                p.style.animationDelay = (Math.random() * 5) + 's';
+                p.style.opacity = Math.random() * 0.5;
+                container.appendChild(p);
             }
         }
+        createParticles();
 
-        // ========== QURAN VERSE FUNCTIONALITY ==========
-        function loadQuranVerse() {
-            const verseArabic = document.getElementById('verse-arabic');
-            const verseTranslation = document.getElementById('verse-translation');
-            const verseReference = document.getElementById('verse-reference');
-            
-            // Remove loading animation
-            verseArabic.classList.remove('loading');
-            verseTranslation.classList.remove('loading');
-            
-            // Fallback verses if API fails
-            const fallbackVerses = [
-                {
-                    arabic: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
-                    translation: "Dengan nama Allah Yang Maha Pengasih, Maha Penyayang.",
-                    reference: "Al-Fatihah: 1"
-                },
-                {
-                    arabic: "قُلْ هُوَ اللَّهُ أَحَدٌ",
-                    translation: "Katakanlah (Muhammad), 'Dialah Allah, Yang Maha Esa.'",
-                    reference: "Al-Ikhlas: 1"
-                },
-                {
-                    arabic: "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ",
-                    translation: "Hanya kepada Engkaulah kami menyembah dan hanya kepada Engkaulah kami memohon pertolongan.",
-                    reference: "Al-Fatihah: 5"
-                }
-            ];
-            
-            const randomFallback = Math.floor(Math.random() * fallbackVerses.length);
-            const verse = fallbackVerses[randomFallback];
-            
-            verseArabic.textContent = verse.arabic;
-            verseTranslation.textContent = verse.translation;
-            verseReference.textContent = verse.reference;
-            
-            verseArabic.classList.add('verse-slide-in');
-            verseTranslation.classList.add('verse-slide-in');
-        }
     </script>
 </body>
 </html>
