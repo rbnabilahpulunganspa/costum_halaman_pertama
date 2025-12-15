@@ -11,123 +11,104 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Dancing+Script:wght@500;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     
-    <!-- Icons (Lucide via UNPKG for lightweight speed) -->
+    <!-- Icons (Lucide) -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
         /* --- Base Settings --- */
         :root {
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --glass-bg: rgba(17, 24, 39, 0.7);
-            --glass-highlight: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --glass-bg: rgba(255, 255, 255, 0.25);
+            --glass-shadow: rgba(255, 182, 193, 0.2);
         }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #0f172a;
-            color: #ffffff;
+            color: #4a044e; /* Dark Purple Text for contrast */
             overflow-x: hidden;
             margin: 0;
             min-height: 100vh;
         }
 
-        .font-serif-display {
-            font-family: 'Playfair Display', serif;
-        }
-        
-        .font-arabic {
-            font-family: 'Amiri', serif;
-        }
+        .font-serif-display { font-family: 'Playfair Display', serif; }
+        .font-handwriting { font-family: 'Dancing Script', cursive; }
+        .font-arabic { font-family: 'Amiri', serif; }
 
-        /* --- Dynamic Background --- */
+        /* --- Dynamic Background (Colorful & Feminine) --- */
         .bg-gradient-animated {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: radial-gradient(circle at 0% 0%, #1e1b4b 0%, transparent 50%), 
-                        radial-gradient(circle at 100% 0%, #312e81 0%, transparent 50%), 
-                        radial-gradient(circle at 100% 100%, #1e3a8a 0%, transparent 50%), 
-                        radial-gradient(circle at 0% 100%, #0f172a 0%, transparent 50%);
-            background-size: 200% 200%;
-            animation: gradientMove 20s ease infinite;
+            /* Gradasi Pink, Ungu, Peach, Biru Langit */
+            background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fad0c4, #a18cd1, #fbc2eb);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             z-index: -2;
         }
 
-        @keyframes gradientMove {
+        @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
-        /* Subtle Batik Texture Overlay */
-        .batik-overlay {
+        /* Sparkle/Grain Overlay */
+        .texture-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
             z-index: -1;
             pointer-events: none;
         }
 
-        /* --- Glassmorphism Cards --- */
+        /* --- Glassmorphism Cards (Cleaner & Brighter) --- */
         .glass-card {
             background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--glass-border);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 32px 0 var(--glass-shadow);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .glass-card:hover {
-            border-color: rgba(255, 255, 255, 0.2);
-            background: rgba(30, 41, 59, 0.8);
-            transform: translateY(-2px);
-            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateY(-5px) scale(1.01);
+            box-shadow: 0 15px 40px 0 rgba(255, 105, 180, 0.25);
         }
 
         /* --- Animations --- */
         .fade-in {
-            animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: fadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             opacity: 0;
             transform: translateY(20px);
         }
-
         .delay-100 { animation-delay: 0.1s; }
         .delay-200 { animation-delay: 0.2s; }
         .delay-300 { animation-delay: 0.3s; }
 
-        @keyframes fadeIn {
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
 
-        /* Search Input Focus Animation */
+        /* Search Input Styling */
         .search-container:focus-within {
-            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.5), 0 8px 40px rgba(0,0,0,0.5);
+            box-shadow: 0 0 0 3px rgba(255, 192, 203, 0.5), 0 8px 20px rgba(0,0,0,0.1);
             transform: scale(1.01);
-            background: rgba(30, 41, 59, 0.9);
+            background: rgba(255, 255, 255, 0.8);
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(0,0,0,0.1);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,0.2);
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255,255,255,0.3);
-        }
+        /* Custom Scrollbar (Pinkish) */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.5); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.8); }
 
         /* Calendar Styles */
         .calendar-day {
@@ -136,92 +117,88 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            border-radius: 8px;
+            border-radius: 50%; /* Bulat penuh */
             font-size: 0.9rem;
             transition: all 0.2s;
+            color: #555;
         }
         .calendar-day:hover:not(.empty) {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.5);
+            color: #d946ef;
         }
         .calendar-day.today {
-            background: #6366f1;
+            background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
             color: white;
             font-weight: bold;
-            box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
-        }
-        .calendar-day.selected {
-            border: 2px solid #6366f1;
+            box-shadow: 0 4px 10px rgba(166, 193, 238, 0.5);
         }
         
-        /* Floating Particles */
-        .particle {
+        /* Floating Bubbles/Particles */
+        .bubble {
             position: absolute;
-            width: 4px;
-            height: 4px;
-            background: white;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.1));
             border-radius: 50%;
-            opacity: 0.3;
-            animation: float 10s infinite linear;
+            animation: floatBubble 15s infinite ease-in-out;
             pointer-events: none;
+            z-index: -1;
         }
-        @keyframes float {
-            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
-            50% { opacity: 0.5; }
-            100% { transform: translateY(-20vh) translateX(20px); opacity: 0; }
+        @keyframes floatBubble {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-50px) translateX(20px); }
         }
 
     </style>
 </head>
-<body class="flex flex-col items-center min-h-screen px-4 py-8 md:py-12 selection:bg-indigo-500 selection:text-white">
+<body class="flex flex-col items-center min-h-screen px-4 py-8 md:py-12 selection:bg-pink-300 selection:text-white">
 
     <!-- Backgrounds -->
     <div class="bg-gradient-animated"></div>
-    <div class="batik-overlay"></div>
-    
-    <!-- Particles Container (JS will fill this) -->
-    <div id="particles" class="fixed inset-0 pointer-events-none z-[-1]"></div>
+    <div class="texture-overlay"></div>
+    <div id="particles" class="fixed inset-0 pointer-events-none z-0"></div>
 
-    <!-- Main Content Container -->
+    <!-- Main Content -->
     <main class="w-full max-w-5xl mx-auto flex flex-col gap-8 relative z-10">
 
-        <!-- Top Section: Date & Greeting -->
-        <header class="text-center space-y-2 fade-in">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-sm text-indigo-200 backdrop-blur-sm mb-4">
-                <i data-lucide="sparkles" class="w-3 h-3"></i>
-                <span id="greeting-text">Selamat Datang</span>
+        <!-- Header: Date & Greeting -->
+        <header class="text-center space-y-2 fade-in mt-6">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/40 border border-white/50 text-sm text-purple-900 font-semibold shadow-sm backdrop-blur-md mb-4 animate-bounce duration-[3000ms]">
+                <i data-lucide="sparkles" class="w-4 h-4 text-pink-500"></i>
+                <span id="greeting-text" class="tracking-wide">Halo...</span>
             </div>
-            <h1 id="time-display" class="text-7xl md:text-9xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 font-serif-display drop-shadow-2xl">
+            
+            <h1 id="time-display" class="text-7xl md:text-9xl font-bold tracking-tight text-white font-serif-display drop-shadow-lg" style="text-shadow: 2px 2px 10px rgba(0,0,0,0.1);">
                 00:00
             </h1>
-            <p id="date-display" class="text-lg md:text-xl text-indigo-200/80 font-light tracking-wide uppercase">
+            
+            <p id="date-display" class="text-lg md:text-2xl text-purple-900/80 font-handwriting tracking-wide">
                 Memuat tanggal...
             </p>
         </header>
 
-        <!-- Search Section -->
+        <!-- Search Bar -->
         <section class="w-full max-w-2xl mx-auto fade-in delay-100 relative z-20">
-            <form id="search-form" class="search-container group relative flex items-center w-full bg-gray-900/40 border border-white/10 rounded-2xl transition-all duration-300 backdrop-blur-xl">
+            <form id="search-form" class="search-container group relative flex items-center w-full bg-white/40 border border-white/60 rounded-full transition-all duration-300 backdrop-blur-xl shadow-lg">
                 
                 <!-- Engine Selector -->
-                <div class="relative">
-                    <button type="button" id="engine-btn" class="flex items-center gap-2 pl-4 pr-3 py-4 text-gray-400 hover:text-white transition-colors border-r border-white/10">
-                        <img id="engine-icon" src="https://www.google.com/s2/favicons?domain=google.com&sz=32" alt="Engine" class="w-5 h-5 rounded-sm opacity-80 group-hover:opacity-100">
+                <div class="relative pl-2">
+                    <button type="button" id="engine-btn" class="flex items-center gap-2 px-3 py-3 text-purple-700 hover:text-purple-900 transition-colors border-r border-white/30">
+                        <img id="engine-icon" src="https://www.google.com/s2/favicons?domain=google.com&sz=32" alt="Engine" class="w-6 h-6 rounded-full shadow-sm">
                         <i data-lucide="chevron-down" class="w-4 h-4"></i>
                     </button>
                     
-                    <!-- Dropdown Menu -->
-                    <div id="engine-menu" class="hidden absolute top-full left-0 mt-2 w-48 bg-gray-900/95 border border-white/10 rounded-xl shadow-2xl backdrop-blur-xl overflow-hidden transform origin-top-left transition-all z-50">
-                        <div class="p-1">
-                            <button type="button" class="engine-option w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white rounded-lg transition-colors" data-engine="google">
+                    <!-- Dropdown -->
+                    <div id="engine-menu" class="hidden absolute top-full left-0 mt-3 w-48 bg-white/90 border border-white rounded-2xl shadow-xl backdrop-blur-xl overflow-hidden transform origin-top-left transition-all z-50">
+                        <div class="p-2 space-y-1">
+                            <button type="button" class="engine-option w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-600 hover:bg-pink-100 hover:text-pink-600 rounded-xl transition-colors" data-engine="google">
                                 <img src="https://www.google.com/s2/favicons?domain=google.com" class="w-4 h-4"> Google
                             </button>
-                            <button type="button" class="engine-option w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white rounded-lg transition-colors" data-engine="duckduckgo">
+                            <button type="button" class="engine-option w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-600 hover:bg-pink-100 hover:text-pink-600 rounded-xl transition-colors" data-engine="duckduckgo">
                                 <img src="https://www.google.com/s2/favicons?domain=duckduckgo.com" class="w-4 h-4"> DuckDuckGo
                             </button>
-                            <button type="button" class="engine-option w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white rounded-lg transition-colors" data-engine="youtube">
+                            <button type="button" class="engine-option w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-600 hover:bg-pink-100 hover:text-pink-600 rounded-xl transition-colors" data-engine="youtube">
                                 <img src="https://www.google.com/s2/favicons?domain=youtube.com" class="w-4 h-4"> YouTube
                             </button>
-                            <button type="button" class="engine-option w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:bg-white/10 hover:text-white rounded-lg transition-colors" data-engine="bing">
+                            <button type="button" class="engine-option w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-600 hover:bg-pink-100 hover:text-pink-600 rounded-xl transition-colors" data-engine="bing">
                                 <img src="https://www.google.com/s2/favicons?domain=bing.com" class="w-4 h-4"> Bing
                             </button>
                         </div>
@@ -230,140 +207,143 @@
 
                 <!-- Input Field -->
                 <input type="text" id="search-input" 
-                    class="w-full bg-transparent text-lg text-white placeholder-gray-500 px-4 py-4 focus:outline-none" 
-                    placeholder="Apa yang ingin Anda cari hari ini?" autocomplete="off" autofocus>
+                    class="w-full bg-transparent text-lg text-purple-900 placeholder-purple-900/50 px-4 py-4 focus:outline-none rounded-r-full font-medium" 
+                    placeholder="Mau cari inspirasi apa hari ini?" autocomplete="off" autofocus>
                 
-                <!-- Search Button -->
-                <button type="submit" class="pr-4 pl-2 text-gray-400 hover:text-indigo-400 transition-colors">
+                <button type="submit" class="pr-6 pl-2 text-purple-400 hover:text-pink-500 transition-colors">
                     <i data-lucide="search" class="w-6 h-6"></i>
                 </button>
             </form>
         </section>
 
-        <!-- Main Grid Layout -->
+        <!-- Grid Layout -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 w-full fade-in delay-200">
             
-            <!-- Left Column: Quick Links (Span 2) -->
+            <!-- Quick Links -->
             <section class="lg:col-span-2 space-y-4">
-                <div class="flex items-center justify-between px-1">
-                    <h2 class="text-lg font-medium text-white/80 flex items-center gap-2">
-                        <i data-lucide="layout-grid" class="w-5 h-5 text-indigo-400"></i> Aplikasi & Tautan
+                <div class="flex items-center justify-between px-2">
+                    <h2 class="text-lg font-bold text-white drop-shadow-md flex items-center gap-2">
+                        <i data-lucide="heart" class="w-5 h-5 text-pink-200 fill-pink-200"></i> Pintasan
                     </h2>
                 </div>
                 
-                <div class="grid grid-cols-2 md:grid-cols-2 gap-4">
-                    <!-- Link Card 1 -->
-                    <a href="https://docs.google.com/spreadsheets/d/1KASOG3UIKxc1SiHl4EY-AIYY077wxdFMwSAquvo4LD4/edit?usp=sharing" class="glass-card p-5 rounded-2xl group flex flex-col justify-between h-32 relative overflow-hidden">
-                        <div class="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
-                            <i data-lucide="table" class="w-16 h-16"></i>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Card 1 -->
+                    <a href="https://gemini.google.com/" class="glass-card p-6 rounded-3xl group flex items-center justify-between relative overflow-hidden h-28">
+                        <div class="relative z-10">
+                            <div class="p-2 bg-pink-100 w-fit rounded-xl text-pink-500 mb-2 shadow-sm">
+                                <i data-lucide="clipboard-list" class="w-5 h-5"></i>
+                            </div>
+                            <h3 class="font-bold text-gray-800 text-lg">Tanya dengan AI</h3>
                         </div>
-                        <div class="p-2 bg-indigo-500/20 w-fit rounded-lg text-indigo-300 mb-2">
-                            <i data-lucide="clipboard-list" class="w-6 h-6"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-semibold text-lg leading-tight">Daftar Reservasi</h3>
-                            <p class="text-xs text-gray-400 mt-1 group-hover:text-indigo-200 transition-colors">Cek jadwal & data</p>
-                        </div>
-                    </a>
-
-                    <!-- Link Card 2 -->
-                    <a href="https://rbnabilahpulunganadm.github.io/daftarsurat/" class="glass-card p-5 rounded-2xl group flex flex-col justify-between h-32 relative overflow-hidden">
-                        <div class="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
-                            <i data-lucide="folder-open" class="w-16 h-16"></i>
-                        </div>
-                        <div class="p-2 bg-pink-500/20 w-fit rounded-lg text-pink-300 mb-2">
-                            <i data-lucide="files" class="w-6 h-6"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-semibold text-lg leading-tight">Kumpulan Berkas</h3>
-                            <p class="text-xs text-gray-400 mt-1 group-hover:text-pink-200 transition-colors">Arsip surat menyurat</p>
+                        <div class="absolute right-[-20px] bottom-[-20px] text-pink-200/40 group-hover:text-pink-300/50 transition-colors rotate-12">
+                            <i data-lucide="table" class="w-32 h-32"></i>
                         </div>
                     </a>
 
-                    <!-- Link Card 4 -->
-                    <a href="https://rbnabilahpulunganadm.github.io/reservasi_pengunjung_NPMABS/" class="glass-card p-5 rounded-2xl group flex flex-col justify-between h-32 relative overflow-hidden">
-                        <div class="absolute right-0 top-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
-                            <i data-lucide="users" class="w-16 h-16"></i>
+                    <!-- Card 2 -->
+                    <a href="https://rbnabilahpulunganadm.github.io/daftarsurat/" class="glass-card p-6 rounded-3xl group flex items-center justify-between relative overflow-hidden h-28">
+                        <div class="relative z-10">
+                            <div class="p-2 bg-purple-100 w-fit rounded-xl text-purple-500 mb-2 shadow-sm">
+                                <i data-lucide="folder-heart" class="w-5 h-5"></i>
+                            </div>
+                            <h3 class="font-bold text-gray-800 text-lg">Kumpulan Berkas</h3>
                         </div>
-                        <div class="p-2 bg-cyan-500/20 w-fit rounded-lg text-cyan-300 mb-2">
-                            <i data-lucide="laptop" class="w-6 h-6"></i>
+                        <div class="absolute right-[-20px] bottom-[-20px] text-purple-200/40 group-hover:text-purple-300/50 transition-colors rotate-12">
+                            <i data-lucide="files" class="w-32 h-32"></i>
                         </div>
-                        <div>
-                            <h3 class="font-semibold text-lg leading-tight">App Reservasi</h3>
-                            <p class="text-xs text-gray-400 mt-1 group-hover:text-cyan-200 transition-colors">Sistem pengunjung</p>
+                    </a>
+
+                    <!-- Card 3 (App) -->
+                    <a href="https://rbnabilahpulunganadm.github.io/reservasi_pengunjung_NPMABS/" class="glass-card p-6 rounded-3xl group flex items-center justify-between relative overflow-hidden h-28 md:col-span-2">
+                        <div class="relative z-10 flex flex-col justify-center">
+                            <div class="flex items-center gap-3 mb-1">
+                                <div class="p-2 bg-blue-100 w-fit rounded-xl text-blue-500 shadow-sm">
+                                    <i data-lucide="monitor-smartphone" class="w-5 h-5"></i>
+                                </div>
+                                <h3 class="font-bold text-gray-800 text-lg">Aplikasi Reservasi</h3>
+                            </div>
+                            <p class="text-gray-600 text-sm pl-1">Sistem Pengunjung & Manajemen Data</p>
+                        </div>
+                        <div class="absolute right-[-10px] top-[-30px] text-blue-200/40 group-hover:text-blue-300/50 transition-colors">
+                            <i data-lucide="users" class="w-40 h-40"></i>
                         </div>
                     </a>
                 </div>
             </section>
 
-            <!-- Right Column: Widgets (Calendar) -->
+            <!-- Calendar Widget -->
             <section class="lg:col-span-1 space-y-4">
-                 <div class="flex items-center justify-between px-1">
-                    <h2 class="text-lg font-medium text-white/80 flex items-center gap-2">
-                        <i data-lucide="calendar" class="w-5 h-5 text-indigo-400"></i> Kalender
+                 <div class="flex items-center justify-between px-2">
+                    <h2 class="text-lg font-bold text-white drop-shadow-md flex items-center gap-2">
+                        <i data-lucide="calendar-days" class="w-5 h-5 text-pink-200"></i> Kalender
                     </h2>
-                    <div class="flex gap-1">
-                        <button id="cal-prev" class="p-1 hover:bg-white/10 rounded"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
-                        <button id="cal-next" class="p-1 hover:bg-white/10 rounded"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+                    <div class="flex gap-1 bg-white/30 rounded-lg p-1 backdrop-blur-sm">
+                        <button id="cal-prev" class="p-1 hover:bg-white rounded-md transition-colors text-purple-800"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+                        <button id="cal-next" class="p-1 hover:bg-white rounded-md transition-colors text-purple-800"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
                     </div>
                 </div>
 
-                <div class="glass-card p-5 rounded-2xl">
-                    <div class="text-center font-semibold mb-4 text-indigo-200" id="calendar-title">Month Year</div>
-                    <div class="grid grid-cols-7 text-center text-xs text-gray-500 mb-2 font-medium">
+                <div class="glass-card p-6 rounded-3xl">
+                    <div class="text-center font-bold text-xl mb-6 text-purple-900 font-serif-display" id="calendar-title">Month Year</div>
+                    <div class="grid grid-cols-7 text-center text-xs text-purple-800/60 mb-3 font-bold uppercase tracking-wider">
                         <div>Min</div><div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div>
                     </div>
-                    <div id="calendar-grid" class="grid grid-cols-7 gap-1 text-sm">
+                    <div id="calendar-grid" class="grid grid-cols-7 gap-2 text-sm font-medium">
                         <!-- JS renders here -->
                     </div>
                 </div>
             </section>
         </div>
 
-        <!-- Bottom Section: Quran Verse -->
-        <section class="w-full fade-in delay-300">
-            <div class="glass-card rounded-2xl p-6 md:p-8 relative overflow-hidden text-center group">
-                <!-- Decorative Quotes Icon -->
-                <div class="absolute top-4 left-4 text-white/5">
-                    <i data-lucide="quote" class="w-12 h-12 rotate-180"></i>
+        <!-- Quran Verse -->
+        <section class="w-full fade-in delay-300 pb-8">
+            <div class="glass-card rounded-3xl p-8 md:p-10 relative overflow-hidden text-center group border-2 border-white/50">
+                <!-- Decorative Icon -->
+                <div class="absolute top-0 left-0 p-6 opacity-10">
+                    <i data-lucide="flower-2" class="w-24 h-24 text-pink-600 rotate-12"></i>
+                </div>
+                <div class="absolute bottom-0 right-0 p-6 opacity-10">
+                    <i data-lucide="flower-2" class="w-24 h-24 text-purple-600 -rotate-12"></i>
                 </div>
 
-                <div class="relative z-10 max-w-3xl mx-auto space-y-4">
-                    <p id="quran-arabic" class="font-arabic text-3xl md:text-4xl leading-loose" dir="rtl">
+                <div class="relative z-10 max-w-3xl mx-auto space-y-6">
+                    <p id="quran-arabic" class="font-arabic text-4xl md:text-5xl leading-[1.6] text-gray-800 drop-shadow-sm" dir="rtl">
                         بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
                     </p>
-                    <p id="quran-translation" class="text-gray-300 italic font-light text-sm md:text-base">
+                    <div class="w-24 h-1 bg-gradient-to-r from-transparent via-pink-400 to-transparent mx-auto rounded-full"></div>
+                    <p id="quran-translation" class="text-gray-700 italic font-medium text-base md:text-lg font-serif-display">
                         "Dengan nama Allah Yang Maha Pengasih, Maha Penyayang."
                     </p>
-                    <div class="inline-block px-3 py-1 bg-white/5 rounded-full text-xs text-indigo-300 border border-white/5 mt-2">
+                    <div class="inline-block px-4 py-1.5 bg-white/60 rounded-full text-xs font-bold text-purple-800 border border-white shadow-sm mt-2">
                         <span id="quran-ref">Al-Fatihah: 1</span>
                     </div>
                 </div>
 
-                <!-- Refresh Button -->
-                <button onclick="loadRandomVerse()" class="absolute bottom-4 right-4 p-2 text-gray-500 hover:text-white hover:bg-white/10 rounded-full transition-all opacity-0 group-hover:opacity-100" title="Ayat Baru">
-                    <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                <button onclick="loadRandomVerse()" class="absolute top-4 right-4 p-2 text-purple-400 hover:text-purple-700 hover:bg-white/50 rounded-full transition-all" title="Ayat Baru">
+                    <i data-lucide="refresh-cw" class="w-5 h-5"></i>
                 </button>
             </div>
         </section>
 
-        <footer class="text-center text-xs text-gray-600 pb-4">
-            &copy; 2025 Dashboard Pribadi. Dibuat dengan Efisiensi.
+        <footer class="text-center text-sm text-white/80 font-medium pb-6 drop-shadow-md">
+            &copy; Dashboard Nabilah Pulungan powered by shafaqo
         </footer>
 
     </main>
 
     <script>
-        // Initialize Lucide Icons
+        // Initialize Icons
         lucide.createIcons();
 
-        // --- Clock & Greeting Logic ---
+        // --- 1. CLOCK & GREETING (FIXED) ---
         function updateClock() {
             const now = new Date();
             const hours = String(now.getHours()).padStart(2, '0');
             const minutes = String(now.getMinutes()).padStart(2, '0');
-            const timeString = ${hours}:${minutes};
             
+            // BUG FIX: Added backticks for template literal
+            const timeString = `${hours}:${minutes}`;
             document.getElementById('time-display').textContent = timeString;
             
             // Date formatting (Indonesia)
@@ -374,17 +354,28 @@
             const h = now.getHours();
             let greet = "Selamat Malam";
             let icon = "moon";
+            let color = "text-indigo-600";
             
-            if (h >= 4 && h < 11) { greet = "Selamat Pagi"; icon = "sun"; }
-            else if (h >= 11 && h < 15) { greet = "Selamat Siang"; icon = "sun"; }
-            else if (h >= 15 && h < 18) { greet = "Selamat Sore"; icon = "cloud-sun"; }
+            if (h >= 4 && h < 11) { 
+                greet = "Selamat Pagi, Semangat!"; 
+                icon = "sun";
+            }
+            else if (h >= 11 && h < 15) { 
+                greet = "Selamat Siang"; 
+                icon = "sun";
+            }
+            else if (h >= 15 && h < 18) { 
+                greet = "Selamat Sore, Rehat Sejenak"; 
+                icon = "sunset";
+            }
             
-            document.getElementById('greeting-text').innerHTML = ${greet};
+            // BUG FIX: Added backticks
+            document.getElementById('greeting-text').innerHTML = `${greet}`;
         }
         setInterval(updateClock, 1000);
         updateClock();
 
-        // --- Search Logic ---
+        // --- 2. SEARCH ENGINE LOGIC ---
         const searchConfig = {
             google: { url: 'https://www.google.com/search?q=', icon: 'https://www.google.com/s2/favicons?domain=google.com&sz=32' },
             duckduckgo: { url: 'https://duckduckgo.com/?q=', icon: 'https://www.google.com/s2/favicons?domain=duckduckgo.com&sz=32' },
@@ -399,28 +390,25 @@
         const searchForm = document.getElementById('search-form');
         const searchInput = document.getElementById('search-input');
 
-        // Toggle Dropdown
         engineBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             engineMenu.classList.toggle('hidden');
         });
 
-        // Close dropdown when clicking outside
         document.addEventListener('click', () => {
             engineMenu.classList.add('hidden');
         });
 
-        // Select Engine
         document.querySelectorAll('.engine-option').forEach(btn => {
             btn.addEventListener('click', () => {
                 currentEngine = btn.dataset.engine;
                 engineIcon.src = searchConfig[currentEngine].icon;
-                searchInput.placeholder = Cari di ${currentEngine.charAt(0).toUpperCase() + currentEngine.slice(1)}...;
+                // BUG FIX: Added backticks
+                searchInput.placeholder = `Cari di ${currentEngine.charAt(0).toUpperCase() + currentEngine.slice(1)}...`;
                 searchInput.focus();
             });
         });
 
-        // Submit Search
         searchForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const query = searchInput.value.trim();
@@ -429,7 +417,7 @@
             }
         });
 
-        // --- Calendar Logic ---
+        // --- 3. CALENDAR LOGIC ---
         let calDate = new Date();
         const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
         
@@ -437,21 +425,20 @@
             const year = calDate.getFullYear();
             const month = calDate.getMonth();
             
-            document.getElementById('calendar-title').textContent = ${monthNames[month]} ${year};
+            // BUG FIX: Added backticks
+            document.getElementById('calendar-title').textContent = `${monthNames[month]} ${year}`;
             
-            const firstDay = new Date(year, month, 1).getDay(); // 0 = Sun
+            const firstDay = new Date(year, month, 1).getDay(); 
             const daysInMonth = new Date(year, month + 1, 0).getDate();
             const grid = document.getElementById('calendar-grid');
             grid.innerHTML = '';
 
-            // Empty slots
             for(let i=0; i<firstDay; i++) {
                 const div = document.createElement('div');
                 div.className = 'calendar-day empty';
                 grid.appendChild(div);
             }
 
-            // Days
             const today = new Date();
             for(let i=1; i<=daysInMonth; i++) {
                 const div = document.createElement('div');
@@ -476,40 +463,79 @@
         });
         renderCalendar();
 
-        // --- Quran Verse Logic (Expanded Database for Offline Reliability) ---
+        // --- 4. QURAN VERSE (FIXED & EXPANDED) ---
         const verses = [
             { a: "فَإِنَّ مَعَ ٱلْعُسْرِ يُسْرًا", t: "Karena sesungguhnya sesudah kesulitan itu ada kemudahan.", r: "Al-Insyirah: 5" },
             { a: "لَا يُكَلِّفُ ٱللَّهُ نَفْسًا إِلَّا وُسْعَهَا", t: "Allah tidak membebani seseorang melainkan sesuai dengan kesanggupannya.", r: "Al-Baqarah: 286" },
             { a: "وَاسْتَعِينُوا بِالصَّبْرِ وَالصَّلَاةِ", t: "Jadikanlah sabar dan shalat sebagai penolongmu.", r: "Al-Baqarah: 45" },
             { a: "إِنَّ اللَّهَ مَعَ الصَّابِرِينَ", t: "Sesungguhnya Allah beserta orang-orang yang sabar.", r: "Al-Baqarah: 153" },
             { a: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً", t: "Ya Tuhan kami, berilah kami kebaikan di dunia dan kebaikan di akhirat.", r: "Al-Baqarah: 201" },
-            { a: "وَاللَّهُ يَعْلَمُ وَأَنتُمْ لَا تَعْلَمُونَ", t: "Allah mengetahui, sedang kamu tidak mengetahui.", r: "Al-Baqarah: 216" }
+            { a: "فَبِأَيِّ آلَاءِ رَبِّكُمَا تُكَذِّبَانِ", t: "Maka nikmat Tuhan kamu yang manakah yang kamu dustakan?", r: "Ar-Rahman: 13" },
+            { a: "وَاللَّهُ يُحِبُّ الْمُحْسِنِينَ", t: "Dan Allah mencintai orang-orang yang berbuat kebaikan.", r: "Ali Imran: 134" },
+            // --- Tambahan Ayat Baru ---
+            { a: "أَلَا بِذِكْرِ ٱللَّهِ تَطْمَئِنُّ ٱلْقُلُوبُ", t: "Ingatlah, hanya dengan mengingati Allah-lah hati menjadi tenteram.", r: "Ar-Ra'd: 28" },
+            { a: "لَئِن شَكَرْتُمْ لَأَزِيدَنَّكُمْ", t: "Sesungguhnya jika kamu bersyukur, pasti Kami akan menambah (nikmat) kepadamu.", r: "Ibrahim: 7" },
+            { a: "وَقَالَ رَبُّكُمُ ٱدْعُونِىٓ أَسْتَجِبْ لَكُمْ", t: "Berdoalah kepada-Ku, niscaya akan Kuperkenankan bagimu.", r: "Ghafir: 60" },
+            { a: "حَسْبُنَا ٱللَّهُ وَنِعْمَ ٱلْوَكِيلُ", t: "Cukuplah Allah menjadi Penolong kami dan Allah adalah sebaik-baik Pelindung.", r: "Ali Imran: 173" },
+            { a: "وَمَن يَتَوَكَّلْ عَلَى ٱللَّهِ فَهُوَ حَسْبُهُۥ", t: "Dan barangsiapa yang bertawakkal kepada Allah niscaya Allah akan mencukupkan (keperluan)nya.", r: "At-Talaq: 3" },
+            { a: "لَا تَقْنَطُوا مِن رَّحْمَةِ ٱللَّهِ", t: "Janganlah kamu berputus asa dari rahmat Allah.", r: "Az-Zumar: 53" },
+            { a: "وَعَسَىٰ أَن تَكْرَهُوا شَيْئًا وَهُوَ خَيْرٌ لَّكُمْ", t: "Boleh jadi kamu membenci sesuatu, padahal ia amat baik bagimu.", r: "Al-Baqarah: 216" },
+            { a: "إِنَّ أَكْرَمَكُمْ عِندَ ٱللَّهِ أَتْقَىٰكُمْ", t: "Sesungguhnya orang yang paling mulia di antara kamu di sisi Allah ialah orang yang paling takwa di antara kamu.", r: "Al-Hujurat: 13" },
+            { a: "هَلْ جَزَآءُ ٱلْإِحْسَٰنِ إِلَّا ٱلْإِحْسَٰنُ", t: "Tidak ada balasan kebaikan kecuali kebaikan (pula).", r: "Ar-Rahman: 60" },
+            { a: "رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ لِي أَمْرِي", t: "Ya Tuhanku, lapangkanlah untukku dadaku, dan mudahkanlah untukku urusanku.", r: "Thaha: 25-26" },
+            { a: "وَكَفَىٰ بِٱللَّهِ وَكِيلًا", t: "Dan cukuplah Allah sebagai Pemelihara.", r: "An-Nisa: 81" },
+            { a: "إِنَّ ٱللَّهَ يُحِبُّ ٱلتَّوَّٰبِينَ وَيُحِبُّ ٱلْمُتَطَهِّرِينَ", t: "Sesungguhnya Allah menyukai orang-orang yang bertaubat dan menyukai orang-orang yang mensucikan diri.", r: "Al-Baqarah: 222" },
+            { a: "إِنَّمَا الْمُؤْمِنُونَ إِخْوَةٌ", t: "Sesungguhnya orang-orang mukmin adalah bersaudara.", r: "Al-Hujurat: 10" },
+            { a: "وَإِذَا سَأَلَكَ عِبَادِي عَنِّي فَإِنِّي قَرِيبٌ", t: "Dan apabila hamba-hamba-Ku bertanya kepadamu tentang Aku, maka (jawablah), bahwasanya Aku adalah dekat.", r: "Al-Baqarah: 186" },
+            { a: "إِنَّمَا أَمْرُهُۥٓ إِذَآ أَرَادَ شَيْـًٔا أَن يَقُولَ لَهُۥ كُن فَيَكُونُ", t: "Sesungguhnya keadaan-Nya apabila Dia menghendaki sesuatu hanyalah berkata kepadanya: 'Jadilah!' maka terjadilah ia.", r: "Yasin: 82" },
+            { a: "وَمَا مِن دَآبَّةٍ فِى ٱلْأَرْضِ إِلَّا عَلَى ٱللَّهِ رِزْقُهَا", t: "Dan tidak ada suatu binatang melata pun di bumi melainkan Allah-lah yang memberi rezekinya.", r: "Hud: 6" },
+            { a: "لَّآ إِلَٰهَ إِلَّآ أَنتَ سُبْحَٰنَكَ إِنِّى كُنتُ مِنَ ٱلظَّٰلِمِينَ", t: "Tidak ada Tuhan selain Engkau. Maha Suci Engkau, sesungguhnya aku adalah termasuk orang-orang yang zalim.", r: "Al-Anbiya: 87" },
+            { a: "وَلَلْءَاخِرَةُ خَيْرٌ لَّكَ مِنَ ٱلْأُولَىٰ", t: "Dan sesungguhnya hari kemudian itu lebih baik bagimu daripada yang sekarang (permulaan).", r: "Ad-Duha: 4" },
+            { a: "فَمَن يَعْمَلْ مِثْقَالَ ذَرَّةٍ خَيْرًا يَرَهُۥ", t: "Barangsiapa yang mengerjakan kebaikan seberat dzarrah pun, niscaya dia akan melihat (balasan)nya.", r: "Az-Zalzalah: 7" },
+            { a: "وَقَضَىٰ رَبُّكَ أَلَّا تَعْبُدُوٓا۟ إِلَّآ إِيَّاهُ وَبِٱلْوَٰلِدَيْنِ إِحْسَٰنًا", t: "Dan Tuhanmu telah memerintahkan supaya kamu jangan menyembah selain Dia dan hendaklah kamu berbuat baik pada ibu bapakmu.", r: "Al-Isra: 23" },
+            { a: "وَيَمْكُرُونَ وَيَمْكُرُ ٱللَّهُ ۖ وَٱللَّهُ خَيْرُ ٱلْمَٰكِرِينَ", t: "Mereka memikirkan tipu daya dan Allah menggagalkan tipu daya itu. Dan Allah sebaik-baik Pembalas tipu daya.", r: "Al-Anfal: 30" },
+            { a: "وَمَا خَلَقْتُ ٱلْجِنَّ وَٱلْإِنسَ إِلَّا لِيَعْبُدُونِ", t: "Dan aku tidak menciptakan jin dan manusia melainkan supaya mereka mengabdi kepada-Ku.", r: "Adz-Dzariyat: 56" },
+            { a: "وَأَن لَّيْسَ لِلْإِنسَٰنِ إِلَّا مَا سَعَىٰ", t: "Dan bahwasanya seorang manusia tiada memperoleh selain apa yang telah diusahakannya.", r: "An-Najm: 39" },
+            { a: "وَهُوَ مَعَكُمْ أَيْنَ مَا كُنتُمْ", t: "Dan Dia bersama kamu di mana saja kamu berada.", r: "Al-Hadid: 4" },
+            { a: "رَبِّ ٱجْعَلْنِى مُقِيمَ ٱلصَّلَوٰةِ وَمِن ذُرِّيَّتِى", t: "Ya Tuhanku, jadikanlah aku dan anak cucuku orang-orang yang tetap mendirikan shalat.", r: "Ibrahim: 40" },
+            { a: "وَمَا ٱلْحَيَوٰةُ ٱلدُّنْيَآ إِلَّا مَتَٰعُ ٱلْغُرُورِ", t: "Kehidupan dunia itu tidak lain hanyalah kesenangan yang memperdayakan.", r: "Ali Imran: 185" },
+            { a: "قُل لَّن يُصِيبَنَآ إِلَّا مَا كَتَبَ ٱللَّهُ لَنَا", t: "Katakanlah: 'Sekali-kali tidak akan menimpa kami melainkan apa yang telah ditetapkan Allah untuk kami.'", r: "At-Taubah: 51" },
+            { a: "وَإِلَىٰ رَبِّكَ فَٱرْغَب", t: "Dan hanya kepada Tuhanmulah hendaknya kamu berharap.", r: "Al-Insyirah: 8" },
+            { a: "إِنَّ ٱللَّهَ وَمَلَٰٓئِكَتَهُۥ يُصَلُّونَ عَلَى ٱلنَّبِىِّ", t: "Sesungguhnya Allah dan malaikat-malaikat-Nya bershalawat untuk Nabi.", r: "Al-Ahzab: 56" },
+            { a: "فَٱذْكُرُونِىٓ أَذْكُرْكُمْ وَٱشْكُرُوا۟ لِى وَلَا تَكْفُرُونِ", t: "Karena itu, ingatlah kamu kepada-Ku niscaya Aku ingat (pula) kepadamu, dan bersyukurlah kepada-Ku, dan janganlah kamu mengingkari (nikmat)-Ku.", r: "Al-Baqarah: 152" },
+            { a: "كُلُّ نَفْسٍ ذَآئِقَةُ ٱلْمَوْتِ", t: "Tiap-tiap yang berjiwa akan merasakan mati.", r: "Ali Imran: 185" },
+            { a: "يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوا۟ ٱتَّقُوا۟ ٱللَّهَ وَكُونُوا۟ مَعَ ٱلصَّٰدِقِينَ", t: "Hai orang-orang yang beriman bertakwalah kepada Allah, dan hendaklah kamu bersama orang-orang yang benar.", r: "At-Taubah: 119" },
+            { a: "وَمِنْ ءَايَٰتِهِۦٓ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَٰجًا لِّتَسْكُنُوٓا۟ إِلَيْهَا", t: "Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu isteri-isteri dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram kepadanya.", r: "Ar-Rum: 21" }
         ];
 
         function loadRandomVerse() {
             const v = verses[Math.floor(Math.random() * verses.length)];
             document.getElementById('quran-arabic').textContent = v.a;
-            document.getElementById('quran-translation').textContent = "${v.t}";
+            // BUG FIX: Added backticks and removed quotes inside
+            document.getElementById('quran-translation').textContent = `"${v.t}"`;
             document.getElementById('quran-ref').textContent = v.r;
         }
-        loadRandomVerse(); // Initial load
+        loadRandomVerse(); 
 
-        // --- Floating Particles (Simple & Fast) ---
-        function createParticles() {
+        // --- 5. BUBBLE ANIMATION (More Feminine than particles) ---
+        function createBubbles() {
             const container = document.getElementById('particles');
-            const particleCount = 15;
+            const count = 10;
             
-            for(let i=0; i<particleCount; i++) {
-                const p = document.createElement('div');
-                p.className = 'particle';
-                p.style.left = Math.random() * 100 + 'vw';
-                p.style.animationDuration = (Math.random() * 10 + 10) + 's';
-                p.style.animationDelay = (Math.random() * 5) + 's';
-                p.style.opacity = Math.random() * 0.5;
-                container.appendChild(p);
+            for(let i=0; i<count; i++) {
+                const b = document.createElement('div');
+                b.className = 'bubble';
+                const size = Math.random() * 60 + 20; // 20px to 80px
+                b.style.width = size + 'px';
+                b.style.height = size + 'px';
+                b.style.left = Math.random() * 100 + 'vw';
+                b.style.top = (Math.random() * 100 + 50) + 'vh'; // start lower
+                b.style.animationDuration = (Math.random() * 10 + 15) + 's';
+                b.style.animationDelay = (Math.random() * 5) + 's';
+                container.appendChild(b);
             }
         }
-        createParticles();
+        createBubbles();
 
     </script>
 </body>
